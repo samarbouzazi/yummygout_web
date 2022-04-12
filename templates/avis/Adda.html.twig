@@ -1,0 +1,24 @@
+{% extends 'base-back.html.twig' %}
+{% block title %} add avis {% endblock %}
+{% block body %}
+<div style="margin-top: 100px ; margin-left: 500px">
+
+{{ form_start(forma,{'attr': {'novalidate': 'novalidate'}} ) }}
+<h1>Ajout avis</h1>
+
+{{ form_errors(forma.likee) }}
+{{ form_label(forma.likee,"likee") }}
+{{ form_widget(forma.likee) }}
+{{ form_errors(forma.deslike) }}
+{{ form_label(forma.deslike,"deslike") }}
+{{ form_widget(forma.deslike) }}
+{{ form_errors(forma.descriptionavis) }}
+{{ form_label(forma.descriptionavis,"descriptionavis") }}
+{{ form_widget(forma.descriptionavis) }}
+{{ form_end(forma) }}
+
+<button >
+    <a href="{{ path('affavis') }}">Retour</a>
+</button>
+</div>
+{% endblock  %}

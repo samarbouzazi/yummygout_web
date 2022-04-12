@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<div style="margin-top: 150px ; margin-left: 350px">
+<body>
+<div class="container">
+    {% for i in bl %}
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="single-latest-news">
+
+                    <a href="single-news.html"><div class={{i.image}}></div></a>
+                    <div class="news-text-box">
+                        <h3><a href="single-news.html">{{i.titreblog}}</a></h3>
+
+                        <p class="excerpt">{{i.descblog}}>
+
+                            <a href="single-news.html" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+                            {#   <a href="addaviss" class="read-more-btn">ajouter commentaire <i class="fas fa-angle-right"></i></a>#}
+                            <button>
+                                <a href="{{ path('addaviss') }}">Ajouter</a>
+                            </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+</body>
+</div>
+</html>
+{% endblock  %}

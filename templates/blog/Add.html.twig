@@ -1,0 +1,44 @@
+
+{% extends 'base-back.html.twig' %}
+{% block title %} add blog {% endblock %}
+{% block body %}
+
+    <div style="margin-top: 125px ; margin-left: 500px ; margin-right: 200px" >
+    <div class="col-lg-8">
+    <div class="card">
+    <div class="card-body">
+    <div class="row g-0">
+    <div style="margin-top: 0px ; margin-left: 120px" >
+    {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+
+    <h5 class="card-title"><h1>Ajouter Blog</h1></h5>
+    <div class="col-6">
+        {{ form_errors(form.titreblog) }}
+        {{ form_label(form.titreblog,"titreblog") }}
+        {{ form_widget(form.titreblog) }}
+    </div>
+    <div class="col-7">
+        {{ form_errors(form.descblog) }}
+        {{ form_label(form.descblog,"descblog") }}
+        {{ form_widget(form.descblog) }}
+    </div>
+    <div class="col-7">
+
+        {{ form_label(form.image,"image") }}
+        {{ form_widget(form.image) }}
+        {{ form_errors(form.image) }}
+    </div>
+
+    <div class="row mb-3">
+
+    <br><div style="margin-top: 0px ; margin-left: 75px">
+    <button  class="btn btn-primary" type="{{ form_end(form) }} </button>
+
+                            </div>
+                            <br>
+
+                </div>
+            </div>
+            </div></div></div></div>
+
+        {% endblock %}
