@@ -1,0 +1,74 @@
+{% extends 'base.html.twig'%}
+{% block body %}
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <style type="text/css" >
+
+        </style>
+        <title>Document</title>
+    </head>
+    <body >
+    <div style="margin-top: 30px ; margin-left: 200px">
+
+
+       <div style="margin-bottom: 5px;margin-left: 700px"><label class="text-monospace" style="border: #86b7fe ; color: red; padding: 8px; font-size: x-large; "> Ajouter Une Commande :       </label>         <a class="btn btn-outline-warning" href="{{ path('Addp') }}"><i class='fa fa-plus'></i></a>
+       </div>
+        <h2 style="animation-fill-mode: initial ; margin-left: 100px">Liste des Commandes</h2>
+        {% for message in app.flashes('info')  %}
+        <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+            {{ message }}
+
+        </div>
+        {% endfor %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 col-md-12">
+                        <div class="cart-table-wrap">
+                            <table class="cart-table">
+                                <thead class="cart-table-head">
+                                <tr class="table-head-row">
+
+                <th >Nom plat</th>
+                 <th> Prix Plat</th>
+                <th>quantite</th>
+                <th>Numéro de commande </th>
+                <th>Rue</th>
+                <th>etat</th>
+                <th>Delegation</th>
+                <th>Nom client</th>
+                 <th>Total</th>
+                <th>Update</th>
+                <th>Delete</th>
+
+            </tr>
+
+                                </thead>
+            {% for p in panier  %}
+            <tr>
+                <td>{{ p.idplat.Nomplat }}</td>
+                <td>{{ p.idplat.prixPlat }}</td>
+                <td>{{ p.quantite }}</td>
+                <td>{{ p.numfacture }}</td>
+                <td>{{ p.Rue }}</td>
+                <td>{{ p.etat }}</td>
+                <td>{{ p.Delegation }}</td>
+                <td>{{ p.idClient.nom }}</td>
+                <td>{{ p.quantite * p.idplat.prixPlat  }} dt</td>
+                <td><a class="btn btn-outline-danger" href ={{ path('update',{'id':p.idpanier}) }}> <i class='fas fa-edit' ></i>  </a></td>
+                <td><a  class="btn btn-outline-success" href ={{ path('supp',{'id':p.idpanier}) }}> <i class="fa fa-trash"></i> </a></td>
+
+            </tr {% endfor %}>
+        </table>
+    </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </body>
+    </html>
+{% endblock %}
