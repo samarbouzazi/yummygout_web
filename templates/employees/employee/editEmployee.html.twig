@@ -1,0 +1,133 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Emplyee{% endblock %}
+
+
+{% block body %}
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    <div class="d-lg-flex half">
+        <div class="bg order-1 order-md-2" style="background-image: url('images/bg_1.jpg');"></div>
+        <div class="contents order-2 order-md-1">
+            <div class="container" style="margin-left:50px ! important; ; margin-top: 20px">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-md-7 py-5" >
+                        <h3>Register</h3>
+                        <p class="mb-4">YummyGout Happy to serve you.</p>
+
+                        {{ form_start(editform, {attr: {novalidate: 'novalidate'}}) }}
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group first">
+                                    <label for="fname">First Name</label>
+                                    {{ form_widget(editform.nomp,{'attr': {'class':'form-control', 'placeholder': 'First Name','required' : 'true'}}) }}
+                                    {{ form_errors(editform.nomp,{'attr': {'class':'text-danger'}})}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group first">
+                                    <label for="lname">Last Name</label>
+                                    {{ form_widget(editform.prenomp,{'attr': {'class':'form-control', 'placeholder': 'Last Name','required' : 'true'}}) }}
+                                    {{ form_errors(editform.prenomp,{'attr': {'class':'text-danger'}})}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group first">
+                                    <label for="email">CIN</label>
+                                    {{ form_widget(editform.cinp,{'attr': {'class':'form-control', 'placeholder': 'CIN','required' : 'true'}}) }}
+                                    {{ form_errors(editform.cinp,{'attr': {'class':'text-danger'}})}}
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group first">
+                                    <label for="lname">Phone Number</label>
+                                    {{ form_widget(editform.telp,{'attr': {'class':'form-control', 'placeholder': 'Phone Number','required' : 'true'}}) }}
+                                    {{ form_errors(editform.telp,{'attr': {'class':'text-danger'}})}}
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group first">
+                                    <label for="lname">Email Address</label>
+                                    {{ form_widget(editform.email,{'attr': {'class':'form-control', 'placeholder': 'Email Address','required' : 'true'}}) }}
+                                    {{ form_errors(editform.email,{'attr': {'class':'text-danger'}})}}
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group last mb-3">
+                                    <label for="password">Salary</label>
+                                    {{ form_widget(editform.salaire,{'attr': {'class':'form-control', 'placeholder': 'Salary','required' : 'true'}}) }}
+                                    {{ form_errors(editform.salaire,{'attr': {'class':'text-danger'}})}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group last mb-3">
+                                    <label for="re-password">Speciality</label>
+                                    {{ form_widget(editform.specialite,{'attr': {'class':'form-control', 'placeholder': 'Speciality','required' : 'true'}}) }}
+                                    {{ form_errors(editform.specialite,{'attr': {'class':'text-danger'}})}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group last mb-3">
+                                    <label for="re-password">Disponibility</label>
+                                    {{ form_widget(editform.disponibilite,{'attr': {'class':'form-control','required' : 'true'}}) }}
+                                    {{ form_errors(editform.disponibilite,{'attr': {'class':'text-danger'}})}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group last mb-3">
+                                    <label for="re-password">Working hours</label>
+                                    {{ form_widget(editform.nbheure,{'attr': {'class':'form-control', 'placeholder': 'Working hours','required' : 'true'}}) }}
+                                    {{ form_errors(editform.nbheure,{'attr': {'class':'text-danger'}})}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group last mb-3">
+                                    <label for="re-password">dateEmbauche</label>
+                                    {{ form_widget(editform.dateEmbauche,{'attr': {'class':'form-control', 'placeholder': 'date of hire','required' : 'true'}}) }}
+                                    {{ form_errors(editform.dateEmbauche,{'attr': {'class':'text-danger'}})}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group last mb-3">
+                                    <label for="re-password">Raise</label>
+                                    {{ form_widget(editform.prime,{'attr': {'class':'form-control', 'placeholder': 'Raise','required' : 'true'}}) }}
+                                    {{ form_errors(editform.prime,{'attr': {'class':'text-danger'}})}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group last mb-3">
+                                    <label for="re-password">Image</label>
+                                    {{ form_widget(editform.image,{'attr': {'class':'form-control', 'placeholder': 'Photo','required' : 'true'}}) }}
+                                    {{ form_errors(editform.image,{'attr': {'class':'text-danger'}})}}
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="col-sm-10" style="display: flex; align-items: center;justify-content: center"></div>
+                        {{ form_widget(editform.Register,{'attr': {'class':'btn btn-warning'}})}}
+
+                        {{ form_end(editform) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}
