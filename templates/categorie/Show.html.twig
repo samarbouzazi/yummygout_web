@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>menu</title>
+    </head>
+    <body>
+    <div class="product-section mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    {#     <div class="product-filters">
+
+                    <ul>
+                        <li class="active" data-filter="*">All</li>
+                        {% for i in cat %}
+
+                        <li> <a href="{{ path('affpClassfronta',{'id':i.idcatt}) }}">{{ i.Nomcat }}</a>  </li>
+
+                        {% endfor %}
+                    </ul>
+
+                </div>
+                    #}
+                    {#
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Pills Tabs</h5>
+                        <!-- Pills Tabs -->
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+
+                                <li  data-filter="*">All</li>
+                                {% for i in cat %}
+
+                                    <li> <a href="{{ path('affpClassfronta',{'id':i.idcatt}) }}">{{ i.Nomcat }}</a>  </li>
+
+                                {% endfor %}
+
+                        </ul>
+                        <div class="tab-content pt-2" id="myTabContent">
+                            <br class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="home-tab">
+                         {% for i in plat %}
+                             <br>
+                                    {{ i.idcatt.Nomcat }}
+                            <br>
+                                    {{ i.Descplat }}
+                            <br>
+                                    {{ i.Nomplat }}
+                            <br>
+                                     class="table-light"><img src="{{ asset('/uploads/' ~ i.Image ) }}" alt="img" class="image" style="max-height: 150px; width: 120px;" >
+                            <br>
+                                    {{ i.PrixPlat }}
+
+          {% endfor %}
+                            </div>
+
+                        </div><!-- End Pills Tabs -->
+                    </div>
+                </div>
+            </div>#}
+                    {#
+                    <div class="row product-lists">
+                        {% for i in plat %}
+                        <div class="col-lg-4 col-md-6 text-center strawberry">
+                            <div class="single-product-item">
+                            <div class="product-image">
+                                <a href="single-product.html"><img src="{{ asset('/uploads/' ~ i.Image ) }}" alt="img" class="image" style="max-height: 350px; width: 350px;" ></a>
+                            </div>
+                            <h3>{{ i.Nomplat }}</h3>
+                            <p class="product-price"><span>{{ i.idcatt.Nomcat }}</span> {{ i.QPlat }} </p>
+                            <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                        </div>
+                         </div>
+
+
+                {% endfor %}
+                    </div>
+
+        </div>
+        </div>
+
+
+
+                    #}
+
+
+<div class="row product-lists">
+    {% for i in plat %}
+        <div class="col-lg-4 col-md-6 text-center strawberry">
+            <div class="single-product-item">
+                <div class="product-image">
+                    <a href="single-product.html"><img src="{{ asset('/uploads/' ~ i.image ) }}" alt="img" class="image" style="max-height: 350px; width: 350px;" ></a>
+                </div>
+                <h3>{{ i.nomplat }}</h3>
+                <h3>{{ i.descplat }}</h3>
+
+                <h3>{{ i.prixPlat }}</h3>
+
+
+                <a  class="cart-btn"><i class="fas fa-shopping-cart"></i> ajouter a la carte</a>
+            </div>
+        </div>
+
+
+    {% endfor %}
+</div>
+{% endblock  %}

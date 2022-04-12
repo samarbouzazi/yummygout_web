@@ -1,0 +1,41 @@
+
+{% extends 'base-back.html.twig' %}
+{% block title %} ajout plat {% endblock %}
+{% block body %}
+
+    <div style="margin-top: 140px ; margin-left: 500px" >
+    <div class="row">
+    <div class="col-lg-8">
+
+    <div class="card">
+    <div class="card-body">
+    {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+    <div style="margin-top: 0px ; margin-left: 125px">
+        <h5 class="card-title"><h1>Ajout categorie </h1></h5></div>
+    <div style="margin-top: 0px ; margin-left: 125px">
+    <div class="col-6">
+        {{ form_errors(form.nomcat) }}
+        {{ form_label(form.nomcat,"Nom categorie") }}
+        {{ form_widget(form.nomcat) }}
+    </div>
+    
+    <div class="col-md-10">
+
+        {{ form_label(form.image,"Image") }}
+        {{ form_widget(form.image)}}
+        {{ form_errors(form.image) }}
+    </div>
+    <div class="row mb-3">
+
+    <br><div style="margin-top: 0px ; margin-left: 75px">
+    <button  class="btn btn-primary" type=" {{ form_end(form) }} </button>
+                                </div>
+                            </div>
+                            <br>
+
+</div>
+    </div>
+    </div>
+    </div>
+    </div>
+{% endblock  %}

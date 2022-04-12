@@ -1,0 +1,68 @@
+{% extends 'base-back.html.twig' %}
+{% block title %} Modifier plat  {% endblock %}
+{% block body %}
+    <div style="margin-top: 150px ; margin-left: 350px" >
+    <section class="section">
+    <div class="row">
+    <div class="col-lg-6">
+
+    <div class="card">
+    <div class="card-body">
+    <div style="margin-top: 0px ; margin-left: 80px">
+        <h5 class="card-title"><h1>Modifier plat</h1></h5>
+    </div>
+    {{ form_start(formpp,{'attr': {'novalidate': 'novalidate'}} ) }}
+    <div style="margin-top: 0px ; margin-left: 125px">
+
+    <div class="col-6">
+        {{ form_errors(formpp.descplat) }}
+        {{ form_label(formpp.descplat,"Description  ") }}
+        {{ form_widget(formpp.descplat) }}
+    </div>
+    <div class="col-6">
+        {{ form_errors(formpp.nomplat) }}
+        {{ form_label(formpp.nomplat,"Nom du plat ") }}
+        {{ form_widget(formpp.nomplat) }}
+    </div>
+    <div class="col-6">
+        {{ form_errors(formpp.prixPlat) }}
+        {{ form_label(formpp.prixPlat,"Prix du plat ") }}
+        {{ form_widget(formpp.prixPlat) }}
+    </div>
+    <div class="col-6">
+        {{ form_errors(formpp.qPlat) }}
+        {{ form_label(formpp.qPlat,"Quantité") }}
+        {{ form_widget(formpp.qPlat) }}
+    </div>
+    <div class="col-6">
+        {{ form_errors(formpp.stock )}}
+        {{ form_label(formpp.stock,"Stock ") }}
+        {{ form_widget(formpp.stock) }}
+    </div>
+    <div class="col-4">
+        {{ form_errors(formpp.idcatt) }}
+        {{ form_label(formpp.idcatt,"Categorie ") }}
+        {{ form_widget(formpp.idcatt) }}
+    </div>
+    <div class="col-md-10">
+
+        {{ form_label(formpp.image,"Image") }}
+        {{ form_widget(formpp.image)}}
+        {{ form_errors(formpp.image) }}
+    </div>
+    <br>
+
+    <div style="margin-top: 0px ; margin-left: 75px">
+    <button  class="btn btn-primary" type=" {{ form_end(formpp) }} </button>
+                                </div>
+                            </div>
+                            <br>
+                            </div>
+
+                                        </div>
+
+
+
+
+                </div></div></div></div>
+                    {% endblock  %}
