@@ -1,0 +1,104 @@
+{% extends 'base-back.html.twig' %}
+{% block body %}
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href=" https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+     <link href=" https://code.jquery.com/jquery-3.5.1.js" rel="stylesheet">
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <title>Document</title>
+
+</head>
+<body>
+<div style="margin-top: 150px ; margin-left: 350px">
+
+    <div class="col-lg-12">
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">liste des produits</h5>
+                <div style="margin-left: 1300px ; margin-right: 300px">
+                <h1 class="form-inline">
+                    <i class="ti-search text-primary icon-md mr-10"></i>
+                    <input class="form-control form-control-sm ml-10 w-30" id="search" type="text"
+                           placeholder="Search"
+                           aria-label="Search">
+                </h1>
+                </form>
+                </div>
+<br>
+                <!-- Table with stripped rows -->
+                <table class="table table-striped" >
+                    <thead>
+                    <tr>
+                    <tr>
+                        <th>
+                            Fournisseur
+                        </th>
+                        <th>
+                            Produit
+                        </th>
+                        <th>
+                            Date d'ajout
+                        </th>
+                        <th>
+                            Date fin validité
+                        </th>
+                        <th>
+                            Prix unitaire
+                        </th>
+                        <th>
+                            Quantité
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr {% for i in sto %}>
+                        <td>
+                            {{ i.idf.nomf }}
+                            {{ i.idf.prenomf }}
+                        </td>
+                        <td>
+                            {{ i.noms }}
+
+                        </td>
+                        <td>
+                            {{ i.dateAjoutS|date("d/m/Y") }}
+                        </td>
+                        <td>
+                            {{ i.dateFinS|date("d/m/Y") }}
+                        </td>
+                        <td>
+                            {{ i.prixs }}
+                        </td>
+                        <td>
+                            {{ i.qts }}
+                        </td>
+
+                        <td>
+                            <a href="{{ path('updateS',{'id':i.ids}) }}">Modifier</a>
+                            <a href="{{ path('deletes',{'id':i.ids}) }}">Supprimer</a>
+                        </td>
+
+
+                    </tr{% endfor %}>
+                    </tbody>
+                </table>
+
+            <button type="button" class="btn btn-warning rounded-pill"><a href="{{ path('adds') }}">Ajouter</a></button>
+
+
+
+        </div></div></div></div>
+
+</body>
+</html>
+{% endblock %}
+

@@ -1,0 +1,56 @@
+
+{% extends 'base-back.html.twig' %}
+{% block title %} Modifier stock {% endblock %}
+{% block body %}
+
+    <div style="margin-top: 170px ; margin-left: 800px" >
+
+            <div class="row">
+                <div class="col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body">
+                            {{ form_start(formS,{'attr': {'novalidate': 'novalidate'}} ) }}
+                            <div style="margin-top: 0px ; margin-left: 125px">
+                                <h5 class="card-title"><h1>Modifier stock</h1></h5>
+                        <div class="col-6">
+                            {{ form_errors(formS.noms) }}
+                            {{ form_label(formS.noms,"Nom du produit") }}
+                            {{ form_widget(formS.noms) }}
+                        </div>
+                                <div class="col-7">
+                                    {{ form_label(formS.dateAjoutS,"Date d'ajout du produit") }}
+                                    <input type="date" class="form-control" content={{ form_widget(formS.dateAjoutS) }}
+                                    </div>
+                                    <div class="col-7">
+                                        {{ form_label(formS.dateFinS,"Date d'expiration") }}
+                                        <input type="date" class="form-control" content={{ form_widget(formS.dateFinS) }}
+                                        </div>
+                        <div class="col-4">
+                            {{ form_errors(formS.prixS) }}
+                            {{ form_label(formS.prixS,"Prix Unitaire") }}
+                            {{ form_widget(formS.prixS) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_errors(formS.qtS) }}
+                            {{ form_label(formS.qtS,"La quantité") }}
+                            {{ form_widget(formS.qtS)}}
+                        </div>
+                        <div class="col-md-7">
+                            {{ form_errors(formS.idf) }}
+                            {{ form_label(formS.idf,"L'email du Fournisseur") }}
+                            {{ form_widget(formS.idf)}}
+                        <br>
+                        <br>
+                            </div>
+
+    <br><div style="margin-top: 0px ; margin-left: 75px">
+    <button  class="btn btn-primary" type="{{ form_end(formS) }} </button>
+
+                            </div>
+                            <br>
+
+            </div></div></div></div>
+
+
+{% endblock %}

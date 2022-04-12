@@ -1,0 +1,58 @@
+{% extends 'base-back.html.twig' %}
+{% block title %} Modifier Fournisseur  {% endblock %}
+{% block body %}
+<div style="margin-top: 170px ; margin-left: 800px" >
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-6">
+
+                <div class="card">
+                    <div class="card-body">
+                        <div style="margin-top: 0px ; margin-left: 80px">
+                            <h5 class="card-title"><h1>Modifier Fournisseur</h1></h5>
+                        </div>
+                        {{ form_start(formu,{'attr': {'novalidate': 'novalidate'}} ) }}
+                        <div style="margin-top: 0px ; margin-left: 125px">
+
+                            <div class="col-6">
+
+                                                {{ form_errors(formu.nomf) }}
+                                                {{ form_label(formu.nomf,"Nom") }}
+                                                {{ form_widget(formu.nomf) }}
+                                            </div>
+                                            <div class="col-6">
+                                                {{ form_errors(formu.prenomf) }}
+                                                {{ form_label(formu.prenomf,"Prenom") }}
+                                                {{ form_widget(formu.prenomf) }}
+                                            </div>
+                                            <div class="col-6">
+                                                {{ form_errors(formu.catf) }}
+                                                {{ form_label(formu.catf,"Categorie") }}
+                                                {{ form_widget(formu.catf) }}
+                                            </div>
+                                            <div class="col-6">
+                                                {{ form_errors(formu.telf) }}
+                                                {{ form_label(formu.telf,"Numero Mobile") }}
+                                                {{ form_widget(formu.telf) }}
+                                            </div>
+                                            <div class="col-md-2">
+                                                {{ form_errors(formu.addf) }}
+                                                {{ form_label(formu.addf,"Email") }}
+                                                {{ form_widget(formu.addf)}}
+                                            </div>
+                           <br>
+
+    <div style="margin-top: 0px ; margin-left: 75px">
+    <button  class="btn btn-primary" type=" {{ form_end(formu) }} </button>
+                                </div>
+                            </div>
+                            <br>
+                            </div>
+
+                                        </div>
+
+
+
+
+                </div></div></div></div>
+                    {% endblock  %}

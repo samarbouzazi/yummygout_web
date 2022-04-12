@@ -1,0 +1,84 @@
+
+{% extends 'base-back.html.twig' %}
+{% block body %}
+
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href=" https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+        <link href=" https://code.jquery.com/jquery-3.5.1.js" rel="stylesheet">
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <title>liste des fournisseurs</title>
+    </head>
+    <body>
+    <div style="margin-top: 150px ; margin-left: 350px">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <h5 class="card-title">produits de: {{ fours.nomf }} {{ fours.prenomf }} </h5>
+                    {#  <form method="post" action="{{ path('rechlike') }}">
+                    <label>Rechercher</label>
+                    <input type="text" name="search"><input type="submit" value="Recherche">
+                </form>#}
+                    <table   id="example" class="display" >
+                        <thead>
+                        <tr >
+                            <th>
+                                libellé
+                            </th>
+                            <th>
+                                quantité
+                            </th>
+                            <th>
+                                prix d'unité
+                            </th>
+                            <th>
+                                email du fournisseur
+                            </th>
+
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr {% for i in stos %}>
+                            <td>
+                                {{ i.noms }}
+                            </td>
+                            <td>
+                                {{ i.qts }}
+                            </td>
+                            <td>
+                                {{ i.prixs }}
+                            </td>
+                            <td>
+                                {{ i.idf.addf }}
+
+                            </td>
+
+                        </tr{% endfor %}>
+                        </tbody>
+                        <script>
+
+                            $(document).ready(function() {
+                                $('#example').DataTable( {
+                                    "order": [[ 3, "desc" ]]
+                                } );
+                            } );
+                        </script>
+
+                    </table>
+                    <button type="button" class="btn btn-warning rounded-pill"><a href="{{ path('adds') }}">Ajouter</a></button>
+
+
+                </div></div></div></div>
+
+
+    </body>
+    </html>
+{% endblock %}
