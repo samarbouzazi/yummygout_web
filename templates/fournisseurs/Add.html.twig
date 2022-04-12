@@ -1,0 +1,55 @@
+{% extends 'base-back.html.twig' %}
+{% block title %} ajout fournisseur {% endblock %}
+{% block body %}
+
+    <div style="margin-top: 170px ; margin-left: 800px" >
+    <section class="section">
+    <div class="row">
+        <div class="col-lg-6">
+
+            <div class="card">
+                <div class="card-body">
+                    {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+                    <div style="margin-top: 0px ; margin-left: 75px">
+                        <h5 class="card-title"><h1>Ajouter Fournisseur</h1></h5></div>
+                    <div style="margin-top: 0px ; margin-left: 125px">
+        <div class="col-6">
+{{ form_errors(form.nomf) }}
+{{ form_label(form.nomf,"Nom ") }}
+{{ form_widget(form.nomf) }}
+        </div>
+        <div class="col-6">
+{{ form_errors(form.prenomf) }}
+{{ form_label(form.prenomf,"Prénom ") }}
+{{ form_widget(form.prenomf) }}
+        </div>
+        <div class="col-6">
+{{ form_errors(form.catf) }}
+{{ form_label(form.catf,"Categorie ") }}
+{{ form_widget(form.catf) }}
+        </div>
+        <div class="col-10">
+{{ form_errors(form.telf) }}
+{{ form_label(form.telf,"Numero Mobile") }}
+{{ form_widget(form.telf) }}
+        </div>
+        <div class="col-md-8">
+
+{{ form_label(form.addf,"Email") }}
+{{ form_widget(form.addf)}}
+{{ form_errors(form.addf) }}
+        </div>
+    <div class="row mb-3">
+
+    <br><div style="margin-top: 0px ; margin-left: 75px">
+    <button  class="btn btn-primary" type=" {{ form_end(form) }} </button>
+                                </div>
+                            </div>
+                            <br>
+
+</div>
+    </div>
+    </div>
+    </div>
+    </div>
+{% endblock  %}
