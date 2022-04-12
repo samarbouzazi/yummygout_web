@@ -1,0 +1,12 @@
+{% extends 'base-back.html.twig' %}
+{% block title %} modifier avis {% endblock %}
+{% block body %}
+<div style="margin-top: 100px ; margin-left: 500px">
+<h1>Update Avis</h1>
+{{ form(formv) }}
+
+<button >
+    <a href="{{ path('affavis') }}">Retour</a>
+</button>
+</div>
+{% endblock  %}

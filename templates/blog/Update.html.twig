@@ -1,0 +1,44 @@
+
+{% extends 'base-back.html.twig' %}
+{% block title %} update blog {% endblock %}
+{% block body %}
+
+    <div style="margin-top: 125px ; margin-left: 500px ; margin-right: 200px" >
+    <div class="col-lg-8">
+    <div class="card">
+    <div class="card-body">
+    <div class="row g-0">
+    <div style="margin-top: 0px ; margin-left: 120px" >
+    {{ form_start(formu,{'attr': {'novalidate': 'novalidate'}} ) }}
+
+    <h5 class="card-title"><h1>Modifier Blog</h1></h5>
+    <div class="col-6">
+        {{ form_errors(formu.titreblog) }}
+        {{ form_label(formu.titreblog,"titreblog") }}
+        {{ form_widget(formu.titreblog) }}
+    </div>
+    <div class="col-7">
+        {{ form_errors(formu.descblog) }}
+        {{ form_label(formu.descblog,"descblog") }}
+        {{ form_widget(formu.descblog) }}
+    </div>
+    <div class="col-7">
+
+        {{ form_label(formu.image,"image") }}
+        {{ form_widget(formu.image) }}
+        {{ form_errors(formu.image) }}
+    </div>
+
+    <div class="row mb-3">
+
+    <br><div style="margin-top: 0px ; margin-left: 75px">
+    <button  class="btn btn-primary" type="{{ form_end(formu) }} </button>
+
+                            </div>
+                            <br>
+
+                </div>
+            </div>
+            </div></div></div></div>
+
+        {% endblock %}

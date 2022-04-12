@@ -1,0 +1,57 @@
+{% extends 'base-back.html.twig' %}
+{% block body %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Blogs</title>
+</head>
+<body><div style="margin-top: 100px ; margin-left: 350px"><div class="col-lg-12">
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Liste des blogs</h5>
+
+<table class="table table-striped" >
+    <thead>
+    <tr>
+        <th>
+            titreblog
+        </th>
+        <th>
+            descblog
+        </th>
+        <th>
+            image
+        </th>
+        <th>EDIT</th>
+
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr {% for i in bl %}>
+        <td>
+            {{ i.titreblog }}
+        </td>
+        <td>
+            {{ i.descblog}}
+        </td>
+        <td>
+        <td class="table-light"><img src="{{ asset('/uploads/' ~ i.image ) }}" alt="img" class="image" style="max-height: 150px; width: 120px;" ></td>
+        </td>
+        <td> <a href="{{ path('d',{'id':i.idblog}) }}">Delete</a> <a href="{{ path('update',{'id':i.idblog}) }}">modifier</a> </td>
+
+    </tr{% endfor %}>
+    </tbody>
+</table>
+<button>
+    <a href="{{ path('add') }}">Ajouter</a>
+</button>
+        </div></div></div></div>
+</body>
+</html>
+{% endblock  %}

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<h3 class="comment-count-title">{{ av|length}} Comments</h3>
+<body>
+<div class="comments-list-wrap">
+    {% for i in av %}
+
+    <div class="comment-list">
+        <div class="single-comment-body">
+            <div class="comment-user-avater">
+
+            </div>
+            <div class="comment-text-body">
+                <h4> user: {{ i.IdClient.prenom}} <br> blog: {{ i.Idblog.titreblog }} <br> j'aime: {{ i.Likee }}<br> j'aime pas: {{ i.deslike }}<br> <span class="comment-date">{{ i.dateavis|date('Y-m-d H:i:s') }}</span> <a href="{{ path('af',{'id':i.Idavis}) }}">Delete</a><a href="{{ path('updateaf',{'id':i.Idavis}) }}">modifier</a></h4>
+                <p>{{i.descriptionavis }}</p>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+            {% endfor %}
+
+</body>
+</html>
+{% endblock  %}
