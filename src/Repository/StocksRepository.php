@@ -89,4 +89,21 @@ class StocksRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @param $find
+     * @return float|int|mixed|string
+     */
+
+    public function findMulti($find)
+    {
+        $q=$this->createQueryBuilder('m')
+            ->where('m.nomf LIKE :find')
+            ->orWhere('m.prenomf LIKE :find')
+            ->orWhere('m.catf LIKE :find')
+            ->orWhere('m.telf LIKE :find')
+            ->orWhere('m.addf LIKE :find')
+            ->setParameter(':find',"%$find%");
+        return $q->getQuery()->getResult();
+    }
+
 }
