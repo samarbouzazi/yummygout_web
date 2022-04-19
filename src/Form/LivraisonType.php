@@ -24,10 +24,10 @@ class LivraisonType extends AbstractType
                     'attr'=>array('readonly'=>true)
                     ])
             ->add('idpanier', EntityType::class, [
-                'label'=>'Numéro facture',
+                'label'=>'Numéro panier',
                 'class'=>Panier::class,
-                'choice_label'=>'numfacture',
-                'placeholder'=>'Choisir un numéro de facture ',
+                'choice_label'=>'Idpanier',
+                'placeholder'=>'Choisir un numéro de panier ',
 
             ])
             ->add('idlivreur', EntityType::class,[

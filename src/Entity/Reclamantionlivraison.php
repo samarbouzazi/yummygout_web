@@ -5,7 +5,6 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
-
 /**
  * Reclamantionlivraison
  *
@@ -25,30 +24,32 @@ class Reclamantionlivraison
 
     /**
      * @var string
-     * @Assert\NotBlank (message ="Remplir le champs reclamation")
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 2555,
+     *      minMessage = "la reclamation doit contenir au moins 10 ",
+     *      maxMessage = "la reclamation doint contenir au plus 2555")
      * @ORM\Column(name="reclamation", type="string", length=255, nullable=false)
      */
     private $reclamation;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="createdat", type="datetime", nullable=false)
      * @Gedmo\Timestampable (on="create")
+     * @ORM\Column(name="createdat", type="datetime", nullable=false)
      */
     private $createdat;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="updatedat", type="datetime", nullable=false)
      * @Gedmo\Timestampable (on="update")
+     * @ORM\Column(name="updatedat", type="datetime", nullable=false)
      */
     private $updatedat;
 
     /**
      * @var \Livraison
-     * @Assert\NotBlank (message ="Choisir une référence de livraison")
+     *
      * @ORM\ManyToOne(targetEntity="Livraison")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_livraison", referencedColumnName="id_livraison")

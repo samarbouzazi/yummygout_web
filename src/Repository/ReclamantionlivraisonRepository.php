@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Form\Extension\Core\Type\SearchType;
 
 /**
  * @method Reclamantionlivraison|null find($id, $lockMode = null, $lockVersion = null)
@@ -73,4 +74,18 @@ class ReclamantionlivraisonRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByMultiple($searchValue)
+    {
+        return $this->createQueryBuilder('r')
+            ->join('r.idLivraison', 'l')
+            ->where('r.reclamation LIKE :rec or r.createdat LIKE :cdate or r.updatedat LIKE :update or l.reflivraison Like :ref or l.etat LIKE :etat or l.date LIKE :date')
+            ->setParameters(
+                ['rec' => '%'.$searchValue.'%', 'cdate'=>'%'.$searchValue.'%',
+                    'update'=>'%'.$searchValue.'%', 'date'=>'%'.$searchValue.'%',
+                    'ref'=>'%'.$searchValue.'%', 'etat'=>'%'.$searchValue.'%'
+                ])
+            ->getQuery()
+            ->getResult();
+    }
 }

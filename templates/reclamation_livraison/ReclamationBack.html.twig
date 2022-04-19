@@ -12,6 +12,11 @@
 <tbody>
 <div style="margin-left:350px; margin-top: 100px">
     <h1>Liste des réclamations</h1>
+    <form method="post" class="form-inline" action="{{ path('search') }}" style="margin-left: 850px">
+
+        <input type="text" name="search" class="form-control" placeholder="Rechercher ..."><input type="submit" class="btn btn-outline-info" style="font-size: 15px" value="Rechercher"></form>
+<br>
+
     <div>
         <section class="section">
             <div>
@@ -40,4 +45,5 @@
                                     <td>{{ s.updatedat|date('Y-m-d H:i:s') }}</td>
                                 </tr {% endfor %}>
                             </table>
+                            {{ knp_pagination_render(reclamationlivraison) }}
                         </div></div></div></div></section></div></div></tbody></html>{% endblock %}

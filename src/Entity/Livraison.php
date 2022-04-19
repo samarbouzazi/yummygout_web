@@ -31,8 +31,8 @@ class Livraison
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="date", type="datetime", nullable=false)
      * @Gedmo\Timestampable (on="create")
+     * @ORM\Column(name="date", type="datetime", nullable=false)
      */
     private $date;
 
@@ -44,24 +44,24 @@ class Livraison
     private $etat = 'en cours';
 
     /**
-     * @var \Livreur
-     * @Assert\NotBlank (message ="Choisir livreur à livrer")
-     * @ORM\ManyToOne(targetEntity="Livreur")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idlivreur", referencedColumnName="idlivreur")
-     * })
-     */
-    private $idlivreur;
-
-    /**
      * @var \Panier
-     * @Assert\NotBlank (message ="Choisir un numéro de facture à livrer")
+     * @Assert\NotBlank (message ="Choisir un numéro de panier")
      * @ORM\ManyToOne(targetEntity="Panier")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="Idpanier", referencedColumnName="Idpanier")
      * })
      */
     private $idpanier;
+
+    /**
+     * @var \Livreur
+     * @Assert\NotBlank (message ="Choisir un livreur")
+     * @ORM\ManyToOne(targetEntity="Livreur")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idlivreur", referencedColumnName="idlivreur")
+     * })
+     */
+    private $idlivreur;
 
     public function getIdLivraison(): ?int
     {
@@ -104,18 +104,6 @@ class Livraison
         return $this;
     }
 
-    public function getIdlivreur(): ?Livreur
-    {
-        return $this->idlivreur;
-    }
-
-    public function setIdlivreur(?Livreur $idlivreur): self
-    {
-        $this->idlivreur = $idlivreur;
-
-        return $this;
-    }
-
     public function getIdpanier(): ?Panier
     {
         return $this->idpanier;
@@ -124,6 +112,18 @@ class Livraison
     public function setIdpanier(?Panier $idpanier): self
     {
         $this->idpanier = $idpanier;
+
+        return $this;
+    }
+
+    public function getIdlivreur(): ?Livreur
+    {
+        return $this->idlivreur;
+    }
+
+    public function setIdlivreur(?Livreur $idlivreur): self
+    {
+        $this->idlivreur = $idlivreur;
 
         return $this;
     }
