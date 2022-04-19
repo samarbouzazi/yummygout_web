@@ -73,5 +73,69 @@ class LivraisonRepository extends ServiceEntityRepository
         ;
     }
     */
-
+    public function OrderByRefDQL(){
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('select l from App\Entity\livraison l order by l.reflivraison ASC');
+        return $query->getResult();
+    }
+    public function OrderByRefDescDQL(){
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('select l from App\Entity\livraison l order by l.reflivraison DESC');
+        return $query->getResult();
+    }
+    public function OrderByEtatasc(){
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('select l from App\Entity\livraison l order by l.etat ASC');
+        return $query->getResult();
+    }
+    public function OrderByEtatdesc(){
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('select l from App\Entity\livraison l order by l.etat DESC');
+        return $query->getResult();
+    }
+    public function OrderByDateasc(){
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('select l from App\Entity\livraison l order by l.date ASC');
+        return $query->getResult();
+    }
+    public function OrderByDatedesc(){
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('select l from App\Entity\livraison l order by l.date DESC');
+        return $query->getResult();
+    }
+    public function OrderByMatriculeasc(){
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('select l from App\Entity\livraison l order by l.idlivreur ASC');
+        return $query->getResult();
+    }
+    public function OrderByMatriculedesc(){
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('select l from App\Entity\livraison l order by l.idlivreur DESC');
+        return $query->getResult();
+    }
+    public function OrderBypanierasc(){
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('select l from App\Entity\livraison l order by l.idpanier ASC');
+        return $query->getResult();
+    }
+    public function OrderBypanierdesc(){
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('select l from App\Entity\livraison l order by l.idpanier DESC');
+        return $query->getResult();
+    }
+ public function findByMultiple($searchValue)
+    {
+        return $this->createQueryBuilder('l')
+            ->join('l.idpanier', 'p')
+            ->join('l.idlivreur', 'liv')
+            ->addSelect('p')
+            ->addSelect('liv')
+            ->where('l.reflivraison LIKE :ref or l.etat LIKE :etat or l.date LIKE :date or p.idpanier Like :panier or liv.matricule LIKE :livreur')
+            ->setParameters(
+                ['ref' => '%'.$searchValue.'%', 'etat'=>'%'.$searchValue.'%',
+                    'date'=>'%'.$searchValue.'%' , 'panier'=>'%'.$searchValue.'%', 'livreur'=>'%'.$searchValue.'%'
+                ])
+            ->getQuery()
+            ->getResult();
+    }
 }

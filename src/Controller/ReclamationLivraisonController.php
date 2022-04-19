@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Reclamantionlivraison;
 use App\Repository\ReclamantionlivraisonRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +29,8 @@ class ReclamationLivraisonController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route ("reclamationlivraison/AfficheR", name="AfficheR")
      */
-    public function Affichel(ReclamantionlivraisonRepository $repository){
+    public function Affichel(){
+        $repository=$this->getDoctrine()->getRepository(Reclamantionlivraison::class);
         $reclamationlivraison=$repository->findAll();
         return $this->render('reclamation_livraison/AfficheR.html.twig', ['reclamationlivraison'=>$reclamationlivraison]);
     }
@@ -94,8 +96,33 @@ class ReclamationLivraisonController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route ("reclamationlivraison/Affichebackrec", name="Afficheb")
      */
-    public function Affichebackrec(ReclamantionlivraisonRepository $repository){
-        $reclamationlivraison=$repository->findAll();
+    public function Affichebackrec(Request $request, PaginatorInterface $paginator){
+        $repository=$this->getDoctrine()->getRepository(Reclamantionlivraison::class);
+        $donnees=$repository->findAll();
+        $reclamationlivraison= $paginator->paginate(
+            $donnees,
+            $request->query->getInt('page', 1),
+            1
+        );
         return $this->render('reclamation_livraison/ReclamationBack.html.twig', ['reclamationlivraison'=>$reclamationlivraison]);
+    }
+
+    /**
+     * @param Request $request
+     * @param ReclamantionlivraisonRepository $repository
+     * @param PaginatorInterface $paginator
+     * @return Response
+     * @Route("/search", name="search")
+     */
+    function rechercher(Request $request, ReclamantionlivraisonRepository $repository, PaginatorInterface $paginator){
+        $searchvalue=$request->get('search');
+        $donnees= $repository->findByMultiple( $searchvalue );
+        $liv= $paginator->paginate(
+            $donnees,
+            $request->query->getInt('page', 1),
+            1
+        );
+        return $this->render('reclamation_livraison/ReclamationBack.html.twig', ['reclamationlivraison'=>$liv]);
+
     }
 }
