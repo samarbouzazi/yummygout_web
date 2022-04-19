@@ -119,7 +119,7 @@ class Platt
      * @Groups("post:read")
      * @ORM\ManyToOne(targetEntity="Categorie")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idcatt", referencedColumnName="idcatt")
+     *   @ORM\JoinColumn(name="idcatt", referencedColumnName="idcatt",onDelete="CASCADE")
      * })
      */
     private $idcatt;
