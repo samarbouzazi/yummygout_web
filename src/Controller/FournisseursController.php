@@ -7,13 +7,14 @@ use App\Entity\Fournisseurs;
 use App\Form\FournisseursType;
 use App\Repository\FournisseursRepository;
 use App\Repository\StocksRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
-class FournisseursController extends AbstractController
+class FournisseursController extends Controller
 {
     /**
      * @Route("/fournisseurs", name="app_fournisseurs")
@@ -29,9 +30,17 @@ class FournisseursController extends AbstractController
      * @Route("/aff", name="aff")
      */
 
-    public function afficher(FournisseursRepository $repository)
+    public function afficher(FournisseursRepository $repository, Request $request):Response
     {
-        $four = $repository->findAll();
+        $allfour = $repository->findAll();
+        $four = $this->get('knp_paginator')->paginate(
+        // Doctrine Query, not results
+            $allfour,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            5
+        );
         return $this->render('fournisseurs/Affiche.html.twig', ['four' => $four]);
 
     }
@@ -105,18 +114,101 @@ class FournisseursController extends AbstractController
      */
     public function ShowStuByClass(FournisseursRepository $repF, StocksRepository $repS, $id)
     {
-        //$classroom = $this->getDoctrine()->getRepository(Classroom::class)->find($id);
+
         $four=$repF->find($id);
         $sto=$repS->listStobyfour($four->getIdf());
-        //1 method:list of Students
-        //$students=$classroom->getStudents();
-        //2 method: from repository
-        //$students= $this->getDoctrine()->getRepository(Student::class)->listStudentByClass($classroom->getId());
+
         return $this->render('fournisseurs/Show.html.twig', array(
-            "fours" => $four,
+            "four" => $four,
             "stos"=>$sto));
     }
+    /**
+     * @Route("fournisseurs/trin", name="trin")
+     */
+    public function OrderByNom(FournisseursRepository $repository,Request $request,PaginatorInterface $paginator)
+    {
+        $student = $repository->orderByNom();
+        // Paginate the results of the query
+        $four = $paginator->paginate(
+        // Doctrine Query, not results
+            $student,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            5
+        );
+        return $this->render('fournisseurs/Affiche.html.twig',
+            ['four' => $four]);
+    }
 
-
+    /**
+     * @Route("fournisseurs/trip", name="trip")
+     */
+    public function OrderByPrenom(FournisseursRepository $repository,Request $request,PaginatorInterface $paginator)
+    {
+        $student = $repository->orderByPrenom();
+        // Paginate the results of the query
+        $four = $paginator->paginate(
+        // Doctrine Query, not results
+            $student,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            5
+        );
+        return $this->render('fournisseurs/Affiche.html.twig',
+            ['four' => $four]);
+    }
+    /**
+     * @Route("fournisseurs/trie", name="trie")
+     */
+    public function OrderByEmail(FournisseursRepository $repository,Request $request,PaginatorInterface $paginator)
+    {
+        $student = $repository->orderByEmail();
+        $four = $paginator->paginate(
+        // Doctrine Query, not results
+            $student,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            5
+        );
+        return $this->render('fournisseurs/Affiche.html.twig',
+            ['four' => $four]);
+    }
+    /**
+     * @Route("fournisseurs/tric", name="tric")
+     */
+    public function OrderByCateg(FournisseursRepository $repository,Request $request,PaginatorInterface $paginator)
+    {
+        $student = $repository->orderByCateg();
+        $four = $paginator->paginate(
+        // Doctrine Query, not results
+            $student,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            5
+        );
+        return $this->render('fournisseurs/Affiche.html.twig',
+            ['four' => $four]);
+    }
+    /**
+     * @Route("/trit", name="trit")
+     */
+    public function OrderBytel(FournisseursRepository $repository,Request $request,PaginatorInterface $paginator)
+    {
+        $student = $repository->orderBytel();
+        $four = $paginator->paginate(
+        // Doctrine Query, not results
+            $student,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            5
+        );
+        return $this->render('fournisseurs/Affiche.html.twig',
+            ['four' => $four]);
+    }
 
 }

@@ -25,21 +25,21 @@ class StocksType extends AbstractType
                 ]
             ])
             ->add('dateAjoutS', DateType::class, [
-        'widget' => 'single_text',
-        'html5' => false,
-        'attr' => ['class' => 'js-datepicker'],
-    ])
+                'widget' => 'single_text',
+                'html5' => false,
+                'attr' => ['class' => 'js-datepicker'],
+            ])
             ->add('dateFinS', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => false,
                 'attr' => ['class' => 'js-datepicker'],
             ])
-        //, DateType::class, ['widget' => 'single_text','html5' => false,'attr' => ['class' => 'js_datepicker'],])
+
             ->add('prixS',TextType::class,[
-            'attr'=>[
-                'placeholder'=>"Merci de saisir le prix de l'unité"
-            ]
-        ])
+                'attr'=>[
+                    'placeholder'=>"Merci de saisir le prix de l'unité"
+                ]
+            ])
             ->add('qtS',TextType::class,[
                 'attr'=>[
                     'placeholder'=>'Merci de saisir la quantité'
