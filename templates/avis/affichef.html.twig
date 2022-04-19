@@ -21,8 +21,10 @@
             </div>
             <div class="comment-text-body">
                 <h4> user: {{ i.IdClient.prenom}} <br> blog: {{ i.Idblog.titreblog }} <br> j'aime: {{ i.Likee }}<br> j'aime pas: {{ i.deslike }}<br> <span class="comment-date">{{ i.dateavis|date('Y-m-d H:i:s') }}</span> <a href="{{ path('af',{'id':i.Idavis}) }}">Delete</a><a href="{{ path('updateaf',{'id':i.Idavis}) }}">modifier</a></h4>
-                <p>{{i.descriptionavis }}</p>
-
+                <p>{{i.descriptionavis }} </p>
+<a href="{{ path('like',{'id':i.idavis}) }}"><img src="/assets/front-office/img/like.png"  ></a>
+                &nbsp;&nbsp;
+    <a href="{{ path('dislike',{'id':i.idavis}) }}"><img src="/assets/front-office/img/dislike.png"  ></a>
             </div>
 
         </div>

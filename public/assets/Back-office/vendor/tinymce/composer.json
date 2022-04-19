@@ -24,13 +24,13 @@
 	"extra": {
 		"component": {
 			"scripts": [
-              "tinymce.js",
+				"tinymce.js",
 				"plugins/*/plugin.js",
 				"themes/*/theme.js",
 				"themes/*/icons.js"
 			],
 			"files": [
-              "tinymce.min.js",
+				"tinymce.min.js",
 				"plugins/*/plugin.min.js",
 				"themes/*/theme.min.js",
 				"skins/**",
@@ -40,7 +40,7 @@
 	},
 	"archive": {
 		"exclude": [
-          "README.md",
+			"README.md",
 			"bower.js",
 			"package.json",
 			".npmignore",

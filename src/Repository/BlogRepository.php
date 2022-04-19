@@ -76,5 +76,23 @@ class BlogRepository extends ServiceEntityRepository
     }
     */
 
+    /**
+     * Requête QueryBuilder
+     * */
+    public function orderBytitre()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.titreblog', 'ASC')
+            ->getQuery()->getResult();
+    }
+
+
+    public function SearchNSC($NSC){
+        return $this->createQueryBuilder('s')
+            ->where('s.titreblog like :NSC or s.descblog like :NSC')
+            ->setParameter('NSC','%'.$NSC.'%')
+            ->getQuery()->getResult();
+    }
+
 
 }
