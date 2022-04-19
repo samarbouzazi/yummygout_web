@@ -35,17 +35,22 @@ class Stocks
 
     /**
      * @var \DateTime
+     * @Assert\Date
      *
      * @ORM\Column(name="date_ajout_s", type="date", nullable=false)
      * @Assert\NotBlank(message="date est obligatoire")
+     * @Assert\GreaterThanOrEqual("today",message="La date d'ajout doit être supérieure à la date d'aujourd'hui"))
      */
     private $dateAjoutS;
 
     /**
      * @var \DateTime
+     * @Assert\Date
      *
      * @ORM\Column(name="date_fin_s", type="date", nullable=false)
      * @Assert\NotBlank(message="date est obligatoire")
+     * @Assert\GreaterThan(propertyPath="dateAjoutS",
+    message="La date du fin doit être supérieure à la date début")
      */
     private $dateFinS;
 
