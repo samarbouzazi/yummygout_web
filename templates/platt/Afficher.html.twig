@@ -21,18 +21,25 @@
     </head>
     <body>
     <div style="margin-top: 150px ; margin-left: 350px">
-        <div class="col-lg-12">
+
 
             <div class="card">
                 <div class="card-body">
                     <h1 style="margin-left: 25px; margin-left: 400px ; color: #658fd0; font-family: 'Arial Black'; font-size: xx-large">Plat</h1>
-
+                    <script type="text/javascript">
+                        function imprimer_page(){
+                            window.print();
+                        }
+                    </script>
 
                     {#  <form method="post" action="{{ path('rechlike') }}">
                     <label>Rechercher</label>
                     <input type="text" name="search"><input type="submit" value="Recherche">
                 </form>#}
-
+                    <form>
+                        <input id="impression" class="js-programmatic-set-val btn btn-outline-primary mr-1 mb-1s" name="impression" type="button" onclick="imprimer_page()" value="Print this page" />
+                    </form>
+                    <a href="{{path('PDF') }}">  PDF </a>
                     <table   id="example" class="display" >
                         <thead>
                         <tr >

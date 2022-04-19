@@ -73,6 +73,12 @@ class PlattRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function order_By_Nom()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.Nomplat', 'ASC')
+            ->getQuery()->getResult();
+    }
+
 }
-//#SELECT p.Nomplat ,c.Nomcat FROM platt p INNER join categorie c on p.idcatt=c.idcatt where c.Nomcat="petit dej";#
 
