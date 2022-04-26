@@ -5,6 +5,38 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>menu</title>
+
+</head>
+<body>
+<style>
+    body{
+        font:normal 12px/20PX "Liberation sans", Arial, Helvetica, sans-serif;
+        color:#585858;
+    }
+    img{
+        width:100px;
+        margin:100px;
+
+    }
+</style>
+<div>
+    <img src='data:image;base64,<?= {{ img64  }};?>' />
+</div>
+    <h1 align="center" style="color:blue;">MENU</h1>
+    <br><br>
+
+<table  class="table table-bordered" width="100%" cellspacing="0">
+    <thead>
+    <tr  align="center">
+        <th> Nom categorie</th>
+        <th>Description plat</th>
+        <th>Nom plat</th>
+
+        <th>prix </th>
+
+
     <title>Document</title>
 </head>
 <body>
@@ -32,9 +64,29 @@
         </th>
 
 
+
     </tr>
     </thead>
     <tbody>
+
+    {% for i in plat %}>
+        <br>
+    <tr align="center">
+        <td>{{ i.idcatt.Nomcat }}</td>
+        <td>{{ i.Descplat }}</td>
+
+        <td>{{ i.Nomplat }}</td>
+
+
+        <td>{{ i.PrixPlat }}</td>
+
+
+
+    </tr>
+
+    </tbody>
+    {% endfor %}>
+
     <tr {% for i in plat %}>
         <td>
             {{ i.idcatt.Nomcat }}
@@ -62,6 +114,7 @@
 
     </tr{% endfor %}>
     </tbody>
+
     <script>
 
         $(document).ready(function() {
@@ -73,6 +126,16 @@
 
 </table>
 
+
+</div>
+</div>
+</div>
+</div>
+<p class="text-warning bg-dark"></p>
+<p class="text-warning bg-dark"></p>
+<p class="text-warning bg-dark">Cher client, ce notre menu bonne appetit.</p>
+
 </div></div></div></div>
+
 </body>
 </html>

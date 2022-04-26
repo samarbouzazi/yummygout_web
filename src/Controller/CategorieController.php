@@ -153,4 +153,30 @@ class CategorieController extends AbstractController
 
 
 
+    /**
+     * @Route("/stats", name="stats")
+     */
+    public function statistiquess(PlattRepository $evRepo)
+    {
+        // On va chercher le nombre d'annonces publiées par date
+        $evenement = $evRepo->countByfour();
+        $dates = [];
+        $evenementCount = [];
+
+
+
+        // On "démonte" les données pour les séparer tel qu'attendu par ChartJS
+        foreach($evenement as $evenements){
+            $dates[] = $evenements['name'];
+            $evenementCount[] = $evenements['count'];
+        }
+
+        return $this->render('categorie/stat.html.twig', [
+
+            'dates' => json_encode($dates),
+            'evenementCount' => json_encode($evenementCount),
+        ]);
+    }
+
+
 }

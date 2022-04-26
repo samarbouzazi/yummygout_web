@@ -22,8 +22,12 @@ class QrcodeService
     {
         $objDateTime= new \DateTime('NOW');
         $dateString= $objDateTime->format('d-m-Y H:i:s');
+
+
+
         $path=dirname(__DIR__,2).'/public/assets/';
         //set qrcode
+
         $result=$this->builder
             ->data($query)
             ->encoding(new Encoding('UTF-8'))
@@ -34,7 +38,14 @@ class QrcodeService
 
             ->build();
         $namePng =uniqid('',''). '.png';
+
+        $result->saveToFile( (\dirname(_DIR_,2).'/public/uploads/Qrcode/'.$namePng));
+        return $result->getDataUri(); //recupere mon image
+    }
+
+
         $result->saveToFile( (\dirname(__DIR__,2).'/public/uploads/qr-code/'.$namePng));
         return $result->getDataUri(); //recupere mon image
     }
+
 }

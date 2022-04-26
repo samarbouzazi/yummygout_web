@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
-
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class PlatType extends AbstractType
 {
@@ -24,7 +24,14 @@ class PlatType extends AbstractType
 
             ->add('prixPlat')
             ->add('qPlat')
-            ->add('stock')
+
+            //->add('stock')
+            ->add('stock', ChoiceType::class, [
+                'choices' => [
+                    'active' => true,
+                    'inactive' => false
+                ]
+            ])
             ->add('idcatt',EntityType::class,
                 [
                     'class'=>Categorie::class,

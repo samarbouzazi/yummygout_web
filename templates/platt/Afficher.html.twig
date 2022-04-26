@@ -1,6 +1,3 @@
-
-
-
 {% extends 'base-back.html.twig' %}
 {% block body %}
 
@@ -36,11 +33,27 @@
                     <label>Rechercher</label>
                     <input type="text" name="search"><input type="submit" value="Recherche">
                 </form>#}
+
+
+                    <a href="{{path('PDF') }}">  PDF </a>
+                    <form>
+                        <input id="impression" class="js-programmatic-set-val btn btn-outline-primary mr-1 mb-1s" name="impression" type="button" onclick="imprimer_page()" value="Print this page" />
+                    </form>
+
+                    <script src="{{ asset('assets/Back-office/js/jquery.min.js') }}"></script>
+
+
+                    <input type="text" class="form-control" placeholder="Search…" aria-label="Search" id="search">
+
+
+                    <table  id="tableac" class="table table-striped">
+
                     <form>
                         <input id="impression" class="js-programmatic-set-val btn btn-outline-primary mr-1 mb-1s" name="impression" type="button" onclick="imprimer_page()" value="Print this page" />
                     </form>
                     <a href="{{path('PDF') }}">  PDF </a>
                     <table   id="example" class="display" >
+
                         <thead>
                         <tr >
                             <th>
@@ -53,16 +66,16 @@
                                 Nomplat
                             </th>
                             <th>
-                                prix_plat
+                                 image
+                            </th>
+                            <th>
+                                  prix_plat
                             </th>
                             <th>
                                 q_plat
                             </th>
                             <th>
-                                stock
-                            </th>
-                            <th>
-                                image
+                                promo
                             </th>
                             <th>Actions</th>
 
@@ -92,32 +105,75 @@
                                 {{ i.QPlat }}
                             </td>
                             <td>
-                                {{ i.stock }}
+                                {% if i.stock %}no{% else %}yes{% endif%}
+
                             </td>
 
                             <td> <a href="{{ path('dp1',{'id':i.Idplat}) }}"><i class="bi bi-trash-fill"></i></a> <a href="{{ path('updatep',{'id':i.idplat}) }}"><i class="bi bi-pencil-square"></i></a> </td>
 
                         </tr{% endfor %}>
+
                         </tbody>
                         <script>
+                            $(document).ready(function(){
+                                $('#search').keyup(function(){
+                                    search_table($(this).val());
+                                });
+                                function search_table(value){
+                                    $('#tableac tbody tr').each(function(){
+                                        var found = 'false';
+                                        $(this).each(function(){
+                                            if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)
+                                            {
+                                                found = 'true';
+                                            }
+                                        });
+                                        if(found == 'true')
+                                        {
+                                            $(this).show();
 
-                            $(document).ready(function() {
-                                $('#example').DataTable( {
-                                    "order": [[ 3, "desc" ]]
-                                } );
-                            } );
+                                        }
+                                        else
+                                        {
+                                            $(this).hide();
+
+                                        }
+                                    });
+                                }
+                            });
                         </script>
+                        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                            <div class="btn-group" role="group">
+                                <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Trier par
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 
+                                    <a class="dropdown-item" href="{{ path('trit') }}">nom du plat</a>
+                                    <a class="dropdown-item" href="{{ path('tritt') }}">description du plat</a>
+                                    <a class="dropdown-item" href="{{ path('trittt') }}"> prix du plat</a>
+
+
+
+                                </div>
+                            </div>
+                        </div>
                     </table>
                     <button >
                         <a href="{{ path('addp') }}">Ajouter</a>
                     </button>
+
+
+
+                    <button type="button" class="btn btn-outline-secondary"><a href="{{ path('stats') }}">Statistiques</a></button>
+
 
                 </div></div></div></div>
 
 
     </body>
     </html>
+
 {% endblock %}
 
 
