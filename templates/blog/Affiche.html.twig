@@ -15,8 +15,29 @@
         <div class="card-body">
             <h5 class="card-title">Liste des blogs</h5>
 
-<table class="table table-striped" >
-    <thead>
+
+
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                <div class="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Trier les blogs par
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <a class="dropdown-item" href="{{ path('trit') }}">Titre</a>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <button type="button"><i></i><a href="{{ path('affblog') }}" class="bi bi-arrow-counterclockwise"></a></button>
+            <input type="text" class="form-control" placeholder="Search…" aria-label="Search" id="search">
+
+
+            <table  id="tableac" class="table table-striped">
+
+            <thead>
     <tr>
         <th>
             titreblog
@@ -43,14 +64,46 @@
         <td>
         <td class="table-light"><img src="{{ asset('/uploads/' ~ i.image ) }}" alt="img" class="image" style="max-height: 150px; width: 120px;" ></td>
         </td>
-        <td> <a href="{{ path('d',{'id':i.idblog}) }}">Delete</a> <a href="{{ path('update',{'id':i.idblog}) }}">modifier</a> </td>
+        <td> <a href="{{ path('d',{'id':i.idblog}) }}"><i class="bi bi-trash-fill"></i></a> <a href="{{ path('update',{'id':i.idblog}) }}"><i class="bi bi-pencil-square"></i></a> </td>
 
     </tr{% endfor %}>
+    <script>
+        $(document).ready(function(){
+            $('#search').keyup(function(){
+                search_table($(this).val());
+            });
+            function search_table(value){
+                $('#tableac tbody tr').each(function(){
+                    var found = 'false';
+                    $(this).each(function(){
+                        if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)
+                        {
+                            found = 'true';
+                        }
+                    });
+                    if(found == 'true')
+                    {
+                        $(this).show();
+
+                    }
+                    else
+                    {
+                        $(this).hide();
+
+                    }
+                });
+            }
+        });
+    </script>
     </tbody>
 </table>
-<button>
-    <a href="{{ path('add') }}">Ajouter</a>
-</button>
+            <button type="button" class="btn btn-outline-secondary"><a href="{{ path('add') }}">Ajouter</a></button>
+
+
+            <div class="pagination">
+                {{ knp_pagination_render(bl) }}
+            </div>
+
         </div></div></div></div>
 </body>
 </html>

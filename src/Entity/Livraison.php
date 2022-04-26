@@ -4,11 +4,10 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Livraison
  *
- * @ORM\Table(name="livraison", indexes={@ORM\Index(name="fk_pan", columns={"Idpanier"}), @ORM\Index(name="FK_A60C9F1F347E1C03", columns={"idlivreur"})})
+ * @ORM\Table(name="livraison", indexes={@ORM\Index(name="fk_delivery", columns={"idlivreur"})})
  * @ORM\Entity
  */
 class Livraison
@@ -31,8 +30,8 @@ class Livraison
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="date", type="datetime", nullable=false)
      * @Gedmo\Timestampable (on="create")
+     * @ORM\Column(name="date", type="datetime", nullable=false)
      */
     private $date;
 
@@ -44,24 +43,35 @@ class Livraison
     private $etat = 'en cours';
 
     /**
-     * @var \Livreur
-     * @Assert\NotBlank (message ="Choisir livreur à livrer")
-     * @ORM\ManyToOne(targetEntity="Livreur")
+     * @var string
+     *
+     * @ORM\Column(name="region", type="string", length=255, nullable=false)
+     */
+    private $region;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rueliv", type="string", length=255, nullable=false)
+     */
+    private $rueliv;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="client", type="string", length=255, nullable=false)
+     */
+    private $client;
+
+    /**
+     * @var \Delivery
+     *
+     * @ORM\ManyToOne(targetEntity="Delivery")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idlivreur", referencedColumnName="idlivreur")
+     *   @ORM\JoinColumn(name="idlivreur", referencedColumnName="id")
      * })
      */
     private $idlivreur;
-
-    /**
-     * @var \Panier
-     * @Assert\NotBlank (message ="Choisir un numéro de facture à livrer")
-     * @ORM\ManyToOne(targetEntity="Panier")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Idpanier", referencedColumnName="Idpanier")
-     * })
-     */
-    private $idpanier;
 
     public function getIdLivraison(): ?int
     {
@@ -104,26 +114,50 @@ class Livraison
         return $this;
     }
 
-    public function getIdlivreur(): ?Livreur
+    public function getRegion(): ?string
     {
-        return $this->idlivreur;
+        return $this->region;
     }
 
-    public function setIdlivreur(?Livreur $idlivreur): self
+    public function setRegion(string $region): self
     {
-        $this->idlivreur = $idlivreur;
+        $this->region = $region;
 
         return $this;
     }
 
-    public function getIdpanier(): ?Panier
+    public function getRueliv(): ?string
     {
-        return $this->idpanier;
+        return $this->rueliv;
     }
 
-    public function setIdpanier(?Panier $idpanier): self
+    public function setRueliv(string $rueliv): self
     {
-        $this->idpanier = $idpanier;
+        $this->rueliv = $rueliv;
+
+        return $this;
+    }
+
+    public function getClient(): ?string
+    {
+        return $this->client;
+    }
+
+    public function setClient(string $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    public function getIdlivreur(): ?Delivery
+    {
+        return $this->idlivreur;
+    }
+
+    public function setIdlivreur(?Delivery $idlivreur): self
+    {
+        $this->idlivreur = $idlivreur;
 
         return $this;
     }

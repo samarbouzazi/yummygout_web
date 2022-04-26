@@ -1,0 +1,65 @@
+
+<div>
+    <section class="section">
+        <div>
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Table with stripped rows -->
+                        <br>
+                        <input type="text" class="form-control" placeholder="Search…" aria-label="Search" id="search">
+                        <table  id="tableac" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>La reclamation</th>
+                                <th>Réference de livraison</th>
+                                <th>Etat de livraison</th>
+                                <th>date de livraison</th>
+                                <th>Sujet</th>
+                                <th>Matricule</th>
+                                <th>Ajoutée le </th>
+                                <th>Modifiée le </th>
+                            </tr>
+                            </thead>
+                            {% for s in reclamationlivraison %}
+                            <tr>
+                                <td>{{ s.reclamation }}</td>
+                                <td>{{ s.idLivraison.reflivraison }}</td>
+                                <td>{{ s.idLivraison.Etat }}</td>
+                                <td>{{ s.idLivraison.date|date('Y-m-d H:i:s') }}</td>
+                                <td>{{ s.sujetrec }}</td>
+                                <td>{{ s.idLivraison.idlivreur.matricule }}</td>
+                                <td>{{ s.createdat|date('Y-m-d H:i:s') }}</td>
+                                <td>{{ s.updatedat|date('Y-m-d H:i:s') }}</td>
+                            </tr {% endfor %}>
+                        </table>
+                        <script>
+                            $(document).ready(function(){
+                                $('#search').keyup(function(){
+                                    search_table($(this).val());
+                                });
+                                function search_table(value){
+                                    $('#tableac tbody tr').each(function(){
+                                        var found = 'false';
+                                        $(this).each(function(){
+                                            if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)
+                                            {
+                                                found = 'true';
+                                            }
+                                        });
+                                        if(found == 'true')
+                                        {
+                                            $(this).show();
+
+                                        }
+                                        else
+                                        {
+                                            $(this).hide();
+
+                                        }
+                                    });
+                                }
+                            });
+                        </script>
+                        {{ knp_pagination_render(reclamationlivraison) }}
+                    </div></div></div></div></section></div>

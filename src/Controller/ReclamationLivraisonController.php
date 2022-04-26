@@ -3,13 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Reclamantionlivraison;
+use App\Repository\LivraisonRepository;
 use App\Repository\ReclamantionlivraisonRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\ReclamantionlivraisonType;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 
 
 class ReclamationLivraisonController extends AbstractController
@@ -26,13 +30,28 @@ class ReclamationLivraisonController extends AbstractController
     /**
      * @param  ReclamantionlivraisonRepository $repository
      * @return \Symfony\Component\HttpFoundation\Response
+     * @Route ("reclamationlivraison/Affichebackrec", name="Afficheb")
+     */
+    public function Affichel(Request $request,ReclamantionlivraisonRepository $repository, PaginatorInterface $paginator){
+        //$user=$this->getUser()->getUsername();
+        //$repository=$this->getDoctrine()->getRepository(Reclamantionlivraison::class);
+        $donnees=$repository->findAll();
+        $reclamationlivraison= $paginator->paginate(
+            $donnees,
+            $request->query->getInt('page', 1),
+            1
+        );
+        return $this->render('reclamation_livraison/ReclamationBack.html.twig', compact('reclamationlivraison'));}
+    /**
+     * @param  ReclamantionlivraisonRepository $repository
+     * @return \Symfony\Component\HttpFoundation\Response
      * @Route ("reclamationlivraison/AfficheR", name="AfficheR")
      */
-    public function Affichel(ReclamantionlivraisonRepository $repository){
-        $reclamationlivraison=$repository->findAll();
-        return $this->render('reclamation_livraison/AfficheR.html.twig', ['reclamationlivraison'=>$reclamationlivraison]);
+    public function Affichebackrec(Request $request){
+        $repository=$this->getDoctrine()->getRepository(Reclamantionlivraison::class);
+        $donnees=$repository->findAll();
+        return $this->render('reclamation_livraison/AfficheR.html.twig', ['reclamationlivraison'=>$donnees]);
     }
-
     /**
      * @Route("/SuppReclivraison/{id}", name="SuppReclivraison")
      */
@@ -54,6 +73,7 @@ class ReclamationLivraisonController extends AbstractController
         $form->handleRequest($request);
         $var=$repository->findOneBy(['idLivraison' => ($Reclamantionlivraison->getIdLivraison())]);
         if($form->isSubmitted()&& $form->isValid() && !$var){
+            $Reclamantionlivraison->setClientname('amani');
             $em=$this->getDoctrine()->getManager();
             $em->persist($Reclamantionlivraison);
             $em->flush();
@@ -89,13 +109,38 @@ class ReclamationLivraisonController extends AbstractController
             'form'=>$form->createView()
         ]);
     }
+
+
     /**
-     * @param  ReclamantionlivraisonRepository $repository
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @Route ("reclamationlivraison/Affichebackrec", name="Afficheb")
+     * @param Request $request
+     * @param ReclamantionlivraisonRepository $repository
+     * @param PaginatorInterface $paginator
+     * @return Response
+     * @Route("/search", name="search")
      */
-    public function Affichebackrec(ReclamantionlivraisonRepository $repository){
-        $reclamationlivraison=$repository->findAll();
-        return $this->render('reclamation_livraison/ReclamationBack.html.twig', ['reclamationlivraison'=>$reclamationlivraison]);
+    function rechercher(Request $request, ReclamantionlivraisonRepository $repository, PaginatorInterface $paginator){
+        $searchvalue=$request->get('search');
+        $donnees= $repository->findByMultiple( $searchvalue );
+        $liv= $paginator->paginate(
+            $donnees,
+            $request->query->getInt('page', 1),
+            1
+        );
+        return $this->render('reclamation_livraison/ReclamationBack.html.twig', ['reclamationlivraison'=>$liv]);
+
     }
+
+    /**
+     * @param ReclamantionlivraisonRepository $repository
+     * @return Response
+     * @Route("/testttt")
+     */
+    function getlivreurs( ReclamantionlivraisonRepository $repository){
+        $donees=$repository->findBy('idLivraison','');
+        return $this->render('reclamation_livraison/test.html.twig', ['donnees'=>$donees]);
+
+    }
+
+
+
 }

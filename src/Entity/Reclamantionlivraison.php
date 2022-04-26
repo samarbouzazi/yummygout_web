@@ -1,10 +1,8 @@
 <?php
 
 namespace App\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Reclamantionlivraison
@@ -25,30 +23,42 @@ class Reclamantionlivraison
 
     /**
      * @var string
-     * @Assert\NotBlank (message ="Remplir le champs reclamation")
+     *
      * @ORM\Column(name="reclamation", type="string", length=255, nullable=false)
      */
     private $reclamation;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="createdat", type="datetime", nullable=false)
      * @Gedmo\Timestampable (on="create")
+     * @ORM\Column(name="createdat", type="datetime", nullable=false)
      */
     private $createdat;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="updatedat", type="datetime", nullable=false)
      * @Gedmo\Timestampable (on="update")
+     * @ORM\Column(name="updatedat", type="datetime", nullable=false)
      */
     private $updatedat;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="sujetrec", type="string", length=255, nullable=false)
+     */
+    private $sujetrec;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="clientname", type="string", length=255, nullable=false)
+     */
+    private $clientname;
+
+    /**
      * @var \Livraison
-     * @Assert\NotBlank (message ="Choisir une référence de livraison")
+     *
      * @ORM\ManyToOne(targetEntity="Livraison")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_livraison", referencedColumnName="id_livraison")
@@ -93,6 +103,30 @@ class Reclamantionlivraison
     public function setUpdatedat(\DateTimeInterface $updatedat): self
     {
         $this->updatedat = $updatedat;
+
+        return $this;
+    }
+
+    public function getSujetrec(): ?string
+    {
+        return $this->sujetrec;
+    }
+
+    public function setSujetrec(string $sujetrec): self
+    {
+        $this->sujetrec = $sujetrec;
+
+        return $this;
+    }
+
+    public function getClientname(): ?string
+    {
+        return $this->clientname;
+    }
+
+    public function setClientname(string $clientname): self
+    {
+        $this->clientname = $clientname;
 
         return $this;
     }

@@ -26,7 +26,8 @@
                                 <th>Date de livraison</th>
                                 <th>Etat de livraison</th>
                                 <th>Matricule de livreur</th>
-                                <th>Numéro de facture</th>
+                                <th>Region du client</th>
+                                <th>adresse du client</th>
                             </tr>
                             </thead>
                             {% for s in livraison %}
@@ -35,7 +36,8 @@
                                 <td>{{ s.date|date('Y-m-d H:i:s') }}</td>
                                 <td>{{ s.etat }}</td>
                                 <td>{{ s.idlivreur.matricule }}</td>
-                                <td>{{ s.idpanier.numfacture }}</td>
+                                <td>{{ s.region}}</td>
+                                <td>{{ s.rueliv}}</td>
                                 <td>
                             </tr {% endfor %}>
                         </table></div></div></div></div></div>

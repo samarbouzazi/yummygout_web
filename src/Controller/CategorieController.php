@@ -10,11 +10,13 @@ use App\Form\ClassroomType;
 use App\Repository\CategorieRepository;
 use App\Repository\ClassroomRepository;
 use App\Repository\PlattRepository;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 class CategorieController extends AbstractController
 {
@@ -41,12 +43,13 @@ class CategorieController extends AbstractController
     /**
      * @Route ("/d/{id}",name="d")
      */
-    public function supprimer($id, CategorieRepository $repository)
+    public function supprimer($id, CategorieRepository $repository,FlashyNotifier $flashy)
     {
         $catt = $repository->find($id);
         $em = $this->getDoctrine()->getManager();
         $em->remove($catt);
         $em->flush();
+        $flashy->warning('Suppression Avec Succès!');
 
         return $this->redirectToRoute('affClass');
     }
@@ -65,8 +68,9 @@ class CategorieController extends AbstractController
      * @Route ("/categorie/add",name="add")
      */
 
-    public function add(Request $request)
+    public function add(Request $request,FlashyNotifier $flashy)
     {
+
         $catt = new Categorie();
         $form = $this->createForm(CategoriesType::class, $catt);
         $form->add('Ajouter', SubmitType::class);
@@ -86,8 +90,11 @@ class CategorieController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($catt);
             $em->flush();
+            $flashy->success('Ajout Avec Succès!');
             return $this->redirectToRoute('affClass');
+
         }
+
         return $this->render('categorie/Add.html.twig', [
             'form' => $form->createView()
         ]);
@@ -98,7 +105,7 @@ class CategorieController extends AbstractController
     /**
      * @Route ("/classroom/update/{id}",name="update")
      */
-    public function update(CategorieRepository $repository, $id, Request $request)
+    public function update(CategorieRepository $repository, $id, Request $request,FlashyNotifier $flashy)
     {
         $catt = $repository->find($id);
         $form = $this->createForm(CategoriesType::class, $catt);
@@ -118,6 +125,7 @@ class CategorieController extends AbstractController
             $catt->setImage($fileName);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+            $flashy->info('Modification Avec Succès!');
             return $this->redirectToRoute("affClass");
         }
         return $this->render('categorie/update.html.twig', [
@@ -128,13 +136,46 @@ class CategorieController extends AbstractController
     /**
      * @Route("/show/{id}", name="showCategorie")
      */
-    public function ShowStuByClass(CategorieRepository $repClass, PlattRepository $repStu, $id)
+    public function ShowStuByClass(Request $request,CategorieRepository $repClass, PlattRepository $repStu, $id, PaginatorInterface $paginator)
     {
         $classroom=$repClass->find($id);
-        $students=$repStu->listplatbycat($classroom->getIdcatt());
+        $donnees=$repStu->listplatbycat($classroom->getIdcatt());
+        //$donnees=$repStu->order_By_Nom();
+        $students = $paginator->paginate(
+            $donnees, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            4 // Nombre de résultats par page
+        );
         return $this->render('categorie/Show.html.twig', array(
             "cat" => $classroom,
             "plat"=>$students));
+    }
+
+
+
+    /**
+     * @Route("/stats", name="stats")
+     */
+    public function statistiquess(PlattRepository $evRepo)
+    {
+        // On va chercher le nombre d'annonces publiées par date
+        $evenement = $evRepo->countByfour();
+        $dates = [];
+        $evenementCount = [];
+
+
+
+        // On "démonte" les données pour les séparer tel qu'attendu par ChartJS
+        foreach($evenement as $evenements){
+            $dates[] = $evenements['name'];
+            $evenementCount[] = $evenements['count'];
+        }
+
+        return $this->render('categorie/stat.html.twig', [
+
+            'dates' => json_encode($dates),
+            'evenementCount' => json_encode($evenementCount),
+        ]);
     }
 
 

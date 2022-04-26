@@ -1,0 +1,56 @@
+{% extends 'Calendrierr.html.twig' %}
+{% block title %}Calendrier{% endblock %}
+{% block stylesheets %}
+    <style>
+        #calendrier{
+            width: 50%;
+            margin: auto;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <h1>Votre calendrier</h1>
+    <p>Pour ajouter un rendez-vous ou le modifier cliquer sur <a href="{{ path('app_calendarr_index') }}">Calendrier</a></p>
+    <div id="calendrier" >
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        window.onload = () => {
+            let calendarElt = document.querySelector("#calendrier")
+            let calendar = new FullCalendar.Calendar(calendarElt, {
+                initialView: 'timeGridWeek',
+                locale: 'fr',
+                timeZone: 'Afrique/Tunisie',
+                headerToolbar: {
+                    start: 'prev,next today',
+                    center: 'title',
+                    end: 'dayGridMonth,timeGridWeek'
+                },
+                events: {{ data|raw }},
+                editable: true,
+                eventResizableFromStart: true,
+            })
+            calendar.on('eventChange', (e) => {
+                let url = `/api/${e.event.id}/edit`
+                let donnees = {
+                    "title": e.event.title,
+                    "description": e.event.extendedProps.description,
+                    "start": e.event.start,
+                    "end": e.event.end,
+                    "backgroundColor": e.event.backgroundColor,
+                    "borderColor": e.event.borderColor,
+                    "textColor": e.event.textColor,
+                    "allday": e.event.allday
+                }
+                let xhr = new XMLHttpRequest
+                xhr.open("PUT", url, true)
+                xhr.send(JSON.stringify(donnees))
+            })
+            calendar.render()
+        }
+    </script>
+
+{% endblock %}
+
