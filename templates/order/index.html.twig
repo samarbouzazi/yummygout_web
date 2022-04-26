@@ -1,0 +1,121 @@
+
+{% extends 'base.html.twig' %}
+{#{% block stylesheets %}#}
+{#    <!-- Load Flashy default CSS -->#}
+{#    <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">#}
+{#{% endblock %}#}
+    {%  block body %}
+
+       <section class="class-timetable-section spad">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="section-title">
+                            <br><br>  <h1 style="font-family: 'Bodoni MT Condensed'">Voici votre Panier</h1>
+                                <a href="{{path("order_Affichefront2")}}"class="cart-btn" style="margin-left: 1050px">
+                                    Voir votre commande
+                                </a>
+{#                            {% for message in app.flashes('info')  %}#}
+{#                                <div class="alert alert-secondary alert-dismissible fade show" role="alert">#}
+{#                                    {{ message }}#}
+{#                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>#}
+{#                                </div>#}
+{#                            {% endfor %}#}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="class-timetable">
+                            <br>
+                            <table style='width:1300px'>
+                                <thead>
+
+                                <tr>
+                                    <th><h4>Produit</h4></th>
+                                    <th><h4>Prix</h4></th>
+                                    <th><h4>Quantité</h4></th>
+                                    <th><h4>Total</h4></th>
+                                    <th><h4>Actions</h4></th>
+                                    </h4>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for element in dataPanier %}
+                                    <tr>
+                                        <td style='color:#0b0b0b'>{{ element.produit.nomplat}}</td>
+                                        <td style='color:#0b0b0b'>{{ element.produit.prixPlat}} dt</td>
+                                        <td style='color:#0b0b0b'>{{ element.quantite }}</td>
+                                        <td style='color:#0b0b0b'>{{ element.quantite * element.produit.prixPlat }}</td>
+                                        <td style='color:#0b0b0b'>{% if element.produit %}
+                                                <button type="button" class="btn btn-outline-danger">    <a  href="{{path("order_add", {id: element.produit.idplat})}}" >
+                                                        <i class='fa fa-plus'></i>
+                                                    </a></button>
+                                                <button type="button" class="btn btn-outline-warning">   <a  href="{{path('order_remove',{'id': element.produit.idplat})}}">
+                                                        <i class="fas fa-window-minimize"></i>
+                                                    </a></button>
+                                                <button type="button" class="btn btn-outline-danger">  <a   href="{{path('order_delete', {'id': element.produit.idplat})}}">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a></button>
+
+
+                                            {% endif %}
+                                        </td>
+
+                                    </tr>
+
+                                {% else %}
+                                    <tr>
+                                        <td style='color:#ffffff'>   <td colspan="5">Votre panier est vide</td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+
+                                <tfoot>
+
+
+                                <tr>
+
+                                    <td colspan="3"><h4>Total</h4></td>
+                                    <td class="text-end"><h4>{{ total }} dt </h4></td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                            <br><br>
+
+                        </div>
+                        <div>
+
+                        <a href="{{path("order_delete_all")}}" class="cart-btn">
+                                vider panier
+                            </a>
+
+
+                            <a href="{{path("order_valider")}}" class="cart-btn">
+                                valider commande
+                            </a>
+                        </div>
+
+                    </div>
+            </div>
+            </div></div>
+
+                </div>
+
+            </div>
+
+        </section>
+                                </tbody>
+                            </table>
+
+
+                </div>
+            </div>
+            </div>
+        </section>
+{#        {{ include('@MercurySeriesFlashy/flashy.html.twig') }}#}
+    {% endblock %}
+{#  {% block js %}#}
+{#      <script src="//code.jquery.com/jquery.js"></script>#}
+{#      <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>#}
+{#  {% endblock %}#}
+
+

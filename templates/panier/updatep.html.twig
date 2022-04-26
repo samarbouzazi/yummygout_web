@@ -1,0 +1,92 @@
+{% extends 'base-back.html.twig'%}
+{% block body %}
+
+    <div  style="display: flex; align-items: center; justify-content: center; margin-top: 25px; margin-bottom: 25px;">
+
+
+        <div class="col-lg-7 mb-5 mb-lg-0">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="form-title">
+                <h1> Update Commande</h1>
+            </div>
+            <div id="form_status"></div>
+            <div >
+                {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+
+                <div>
+                    <p> {{ form_widget(form.quantite,  {'attr':{'class':'form-control'}}) }}
+                        {{ form_errors(form.quantite) }}</p>
+
+                    <p>{{ form_widget(form.idplat,  {'attr':{'class':'form-control'}}) }}
+                        {{ form_errors(form.idplat) }}</p>
+                    <p> {{ form_widget(form.client,  {'attr':{ 'class':'form-control'}}) }}
+                        {{ form_errors(form.client) }}</p>
+
+                    <p>             </p>
+                </div>
+                <input type="hidden" name="token" value="FsWga4&amp;@f6aw">
+                <p>{{ form_widget(form.Update,  {'attr':{'class':'btn btn-outline-dark'}}) }}</p>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+{% endblock %}
+   {#  <h1> update commande</h1>
+    <div STYLE="margin-left: 400px ; margin-top: 50px">
+        {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+        <table>
+            <tr>
+                <td>{{ form_label(form.quantite) }}</td>
+                <td>{{ form_widget(form.quantite) }}</td>
+                <td>{{ form_errors(form.quantite) }}</td>
+            </tr>
+            <tr>
+                <td>{{ form_label(form.numfacture) }}</td>
+                <td>{{ form_widget(form.numfacture) }}</td>
+                <td>{{ form_errors(form.numfacture) }}</td>
+
+            </tr>
+            <tr>
+                <td>{{ form_label(form.rue) }}</td>
+                <td>{{ form_widget(form.rue) }}</td>
+                <td>{{ form_errors(form.rue) }}</td>
+
+            </tr>
+            <tr>
+                <td>{{ form_label(form.etat) }}</td>
+                <td>{{ form_widget(form.etat) }}</td>
+                <td>{{ form_errors(form.etat) }}</td>
+
+            </tr>
+            <tr>
+                <td>{{ form_label(form.delegation) }}</td>
+                <td>{{ form_widget(form.delegation) }}</td>
+                <td>{{ form_errors(form.delegation) }}</td>
+
+            </tr>
+            <tr>
+                <td>{{ form_label(form.idplat) }}</td>
+                <td>{{ form_widget(form.idplat) }}</td>
+                <td>{{ form_errors(form.idplat) }}</td>
+
+            </tr>
+            <tr>
+                <td>{{ form_label(form.idClient) }}</td>
+                <td>{{ form_widget(form.idClient) }}</td>
+                <td>{{ form_errors(form.idClient) }}</td>
+
+            </tr>
+        </table>
+        {{ form_end(form) }}
+    </div>#}

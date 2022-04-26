@@ -1,0 +1,64 @@
+{% extends 'base-back.html.twig'%}
+{% block body %}
+    <!doctype html>
+    <html lang="en"> <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <style>
+
+        </style>
+        <title>Document</title>
+    </head>
+    <body >
+    <div style="margin-top: 100px ; margin-left: 400px">
+
+        <h1 style="margin-left: 25px; margin-left: 400px ; color: #86b7fe; font-family: 'Arial Black'; font-size: xx-large">Paiement</h1>
+
+        <div style="margin-bottom: 5px;margin-left: 700px"><label class="text-monospace" style="border: #86b7fe ; color: #6c757d; padding: 8px; font-size: x-large; "> Ajouter Un Paiement :       </label>         <a class="btn btn-outline-warning" href="{{ path('addpai') }}"><i class="bi bi-plus-square-fill"></i></a>
+        </div>
+        {% for message in app.flashes('info')  %}
+        <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        <div class="card" style="margin-right: 35px">
+                        <div class="card-body" style="margin-right: 50px">
+        <table  class="table"  >
+            <thead>
+            <tr >
+
+                <th>Etat de Paiement</th>
+                <th>numfacture</th>
+                <th>Nom client</th>
+                <th>Update</th>
+                <th>Delete</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for p in paiement  %}
+            <tr>
+                <td>{{ p.etatpaiement}}</td>
+                <td>{{ p.idpanier.idpanier }}</td>
+                <td>{{ p.idClient.nom }}</td>
+                <td><a href ={{ path('updatepp',{'id':p.idpaiement}) }}> <i class="bi bi-pencil-square"></i> </a></td>
+                <td><a href ={{ path('suppppp',{'idpaiement':p.idpaiement}) }}> <i class="bi bi-trash-fill"></i> </a></td>
+
+            </tr {% endfor %}>
+            </tbody>
+        </table>
+                    </div>
+
+
+
+    </div>
+
+    </div>
+
+
+    </body>
+    </html>
+{% endblock %}

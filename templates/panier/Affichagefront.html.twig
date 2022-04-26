@@ -1,0 +1,75 @@
+{% extends 'base.html.twig'%}
+{% block body %}
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <style type="text/css" >
+
+        </style>
+        <title>Document</title>
+    </head>
+    <body >
+    <div style="margin-top: 30px ; margin-left: 200px">
+
+
+
+        <h2 style="animation-fill-mode: initial ; margin-left: 100px">Mes Commandes</h2>
+        <br>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 col-md-12">
+                        <div class="cart-table-wrap">
+                            <table class="cart-table">
+                                <thead class="cart-table-head">
+                                <tr class="table-head-row">
+
+                <th >Nom plat</th>
+                 <th> Prix Plat</th>
+                <th>quantite</th>
+                <th>Nom client</th>
+                 <th>Total</th>
+
+
+            </tr>
+
+                                </thead>
+            {% set total=0 %}
+            {% for p in panierr  %}
+
+            <tr>
+                <td>{{ p.idplat.Nomplat }}</td>
+                <td>{{ p.idplat.prixPlat }}</td>
+                <td>{{ p.quantite }}</td>
+                <td>{{ p.client }}</td>
+                <td>{{ p.total  }} dt</td>
+
+            </tr {% endfor %}>
+        </table>
+                    <tfoot>
+                        <tr>
+                  <td colspan="3">Total</td>
+                             <td class="text-end">{{ total }} dt</td>
+                           </tr>
+                        <div  class="pagination" style="margin-right: 1050px">
+                            {{ knp_pagination_render(panierr) }}
+                        </div>
+                           </tfoot>
+
+    </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <a href="{{path("order_listA")}}"class="cart-btn" style="margin-left: 1350px">
+        PDF
+    </a>
+    <br>
+
+    </body>
+    </html>
+{% endblock %}
