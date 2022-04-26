@@ -1,0 +1,114 @@
+{% extends 'base-back.html.twig'%}
+{% block body %}
+<!doctype html>
+<div lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<tbody>
+<div style="margin-left:330px; margin-top: 100px; margin-right: 30px">
+<h1>Livraisons</h1>
+    {% for message in app.flashes('info')  %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>{% endfor %}
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Table with stripped rows -->
+                        <br>
+                        <input type="text" class="form-control" placeholder="Search…" aria-label="Search" id="search">
+                        <table  id="tableac" class="table table-striped">
+                            <thead>
+                            <tr>
+        <th scope="col" >Référence livraison <a href="{{ path('refasc') }}"><i class="bi bi-sort-up"></i></a><a href="{{ path('refdesc') }}"><i class="bi bi-sort-down"></i></a></th>
+        <th scope="col">Date de livraison <a href="{{ path('dateasc') }}"><i class="bi bi-sort-up"></i></a><a href="{{ path('datedesc') }}"><i  class="bi bi-sort-down"></i></a></th>
+        <th scope="col">Etat de livraison<a href="{{ path('etatasc') }}"><i class="bi bi-sort-up"></i></a><a href="{{ path('etatdesc') }}"><i  class="bi bi-sort-down"></i></a></th>
+        <th scope="col">Matricule de livreur<a href="{{ path('matriculeasc') }}"><i class="bi bi-sort-up"></i></a><a href="{{ path('matriculedesc') }}"><i  class="bi bi-sort-down"></i></a></th>
+        <th scope="col">Region du client<a href="{{ path('regionasc') }}"><i class="bi bi-sort-up"></i></a><a href="{{ path('regiondesc') }}"><i  class="bi bi-sort-down"></i></a></th>
+        <th scope="col">adresse du client<a href="{{ path('rueasc') }}"><i class="bi bi-sort-up"></i></a><a href="{{ path('ruedesc') }}"><i  class="bi bi-sort-down"></i></a></th>
+        <th scope="col">Supprimer</th>
+        <th scope="col">Modifier</th>
+
+    </tr>
+                        </thead>
+    {% for s in livraison %}
+                <tbody>
+                <tr>
+        <td>{{ s.reflivraison }}</td>
+        <td>{{ s.date|date('Y-m-d H:i:s') }}</td>
+        <td>{{ s.etat }}</td>
+        <td>{{ s.idlivreur.matricule }}</td>
+        <td><a href="{{ path('tester', {'region':s.region, 'rueliv':s.rueliv}) }}">{{ s.region }}</a></td>
+        <td>{{ s.rueliv }}</td>
+                    <td>
+                                <a type="button" data-target="#deleteModal{{ s.idLivraison }}" data-bs-toggle="modal" data-bs-target="#smallModal">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                                <div class="modal fade" id="smallModal" tabindex="-1">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Avertissement</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                        Voulez vous supprimer cette livraison {{ s.reflivraison }}!  </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <a href="{{ path('Supplivraison', {'id':s.idLivraison}) }}" class="btn btn-outline-light text-dark" > Supprimer </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- End Small Modal-->
+                    </td>
+       <td><a href={{ path('update', {'id':s.idLivraison}) }} ><i class="bi bi-pencil-square"></i></a></td>
+    </tr {% endfor %}>
+
+                </tr>
+                </tbody>
+                        </table>
+                        <script>
+                            $(document).ready(function(){
+                                $('#search').keyup(function(){
+                                    search_table($(this).val());
+                                });
+                                function search_table(value){
+                                    $('#tableac tbody tr').each(function(){
+                                        var found = 'false';
+                                        $(this).each(function(){
+                                            if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)
+                                            {
+                                                found = 'true';
+                                            }
+                                        });
+                                        if(found == 'true')
+                                        {
+                                            $(this).show();
+
+                                        }
+                                        else
+                                        {
+                                            $(this).hide();
+
+                                        }
+                                    });
+                                }
+                            });
+                        </script>
+                        {{ knp_pagination_render(livraison) }}
+                        <!-- End Table with stripped rows -->
+                    </div>
+                </div>
+
+            </div>
+        </div></section></div></tbody></div></html>
+
+{% endblock %}

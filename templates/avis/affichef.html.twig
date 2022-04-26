@@ -20,9 +20,19 @@
 
             </div>
             <div class="comment-text-body">
-                <h4> user: {{ i.IdClient.prenom}} <br> blog: {{ i.Idblog.titreblog }} <br> j'aime: {{ i.Likee }}<br> j'aime pas: {{ i.deslike }}<br> <span class="comment-date">{{ i.dateavis|date('Y-m-d H:i:s') }}</span> <a href="{{ path('af',{'id':i.Idavis}) }}">Delete</a><a href="{{ path('updateaf',{'id':i.Idavis}) }}">modifier</a></h4>
-                <p>{{i.descriptionavis }}</p>
+                 client: {{ i.IdClient.prenom}} <br> blog: {{ i.Idblog.titreblog }} <br> <br> <span class="comment-date">{{ i.dateavis|date('Y-m-d H:i:s') }}</span>
 
+                    <button type="button" class="btn btn-outline-danger"><a href="{{ path('af',{'id':i.Idavis})}}">Supprimer</a></button>
+
+                <button type="button" class="btn btn-outline-success"><a href="{{ path('updateaf',{'id':i.Idavis}) }}">Modifier</a></button>
+
+                <h4>{{i.descriptionavis }} </h4>
+<a href="{{ path('like',{'id':i.idavis}) }}"><img src="/assets/front-office/img/likee.png"  ></a>
+                {{ i.Likee }}
+                &nbsp;
+    <a href="{{ path('dislike',{'id':i.idavis}) }}"><img src="/assets/front-office/img/unlikee.png"  ></a>
+
+                {{ i.deslike }}
             </div>
 
         </div>

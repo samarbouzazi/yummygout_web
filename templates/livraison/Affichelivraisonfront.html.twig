@@ -1,0 +1,46 @@
+{% extends 'base.html.twig'%}
+{% block body %}
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+    </head>
+    <body>
+    <div style="margin-left:350px; margin-top: 100px">
+        <h1>Vos livraisons</h1>
+        <a href="/AjouterReclivraison" class="btn btn-danger">Ajouter une réclamation</a>
+        <p>
+        </p>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+                    <div class="cart-table-wrap">
+                        <table class="cart-table">
+                            <thead class="cart-table-head">
+                            <tr class="table-head-row">
+                                <th>Référence livraison</th>
+                                <th>Date de livraison</th>
+                                <th>Etat de livraison</th>
+                                <th>Matricule de livreur</th>
+                                <th>Region du client</th>
+                                <th>adresse du client</th>
+                            </tr>
+                            </thead>
+                            {% for s in livraison %}
+                            <tr >
+                                <td>{{ s.reflivraison }}</td>
+                                <td>{{ s.date|date('Y-m-d H:i:s') }}</td>
+                                <td>{{ s.etat }}</td>
+                                <td>{{ s.idlivreur.matricule }}</td>
+                                <td>{{ s.region}}</td>
+                                <td>{{ s.rueliv}}</td>
+                                <td>
+                            </tr {% endfor %}>
+                        </table></div></div></div></div></div>
+    </body>
+    </html>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig'%}
+{% block body %}
+    {#  <div style="margin-left:350px; margin-top: 100px">
+<h1>Ajouter reclamation livraison</h1>
+{{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+    <table>
+        <tr>
+            <td>{{ form_label(form.reclamation) }}</td>
+            <td>{{ form_widget(form.reclamation) }}</td>
+            <td>{{ form_errors(form.reclamation) }}</td>
+        </tr>
+        <tr>
+            <td>{{ form_label(form.idLivraison) }}</td>
+            <td>{{ form_widget(form.idLivraison) }}</td>
+            <td>{{ form_errors(form.idLivraison) }}</td>
+        </tr>
+    </table>
+{{ form_end(form) }}
+</div>#}
+    <div style="display: flex; align-items: center; justify-content: center; margin-top: 25px">
+        <div class="col-lg-8 mb-5 mb-lg-0">
+            <div class="form-title">
+                <h2>Reclamation</h2>
+                <p>Cet espace est pour vous ! vous pouvez ajouter une reclamation en cas de retard ou d'un probléme .</p>
+            </div>
+            <div id="form_status"></div>
+            <div class="contact-form">
+                {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+                <p>
+                    {{ form_widget(form.idLivraison, {'attr':{'class':'form-control'}}) }}
+                    {{ form_errors(form.idLivraison) }}
+                </p>
+                <p>
+                    {{ form_widget(form.sujetrec, {'attr':{'class':'form-control'}}) }}
+                    {{ form_errors(form.sujetrec) }}
+                </p>
+                <p>
+                    {{ form_widget(form.reclamation, {'attr':{'class':'form-control'}}) }}
+                    {{ form_errors(form.reclamation) }}
+                </p>
+                <input type="hidden" name="token" value="FsWga4&amp;@f6aw">
+                <p >{{ form_widget(form.Update, {'attr':{'class':'btn btn-outline-dark'}}) }}</p>
+                {{ form_end(form) }}
+            </div>
+        </div></div>
+{% endblock %}

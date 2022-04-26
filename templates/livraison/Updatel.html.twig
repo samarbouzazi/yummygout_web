@@ -1,0 +1,67 @@
+{% extends 'base-back.html.twig'%}
+{% block body %}
+    <div style="margin-left:350px; margin-top: 100px">
+        {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+        <h1>Modifier livraison</h1>
+        <div class="col-md-9" >
+            {% for message in app.flashes('info')  %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div></div>
+
+        {% endfor %}
+        <form>
+            <div class="col-md-9" >
+                {{ form_widget(form.reflivraison , {'attr':{'class':'form-control'}})}}
+                {{ form_errors(form.reflivraison) }}
+            </div>
+<br>
+            <div class="col-md-9">
+                {{ form_widget(form.etat , {'attr':{'class':'form-control'}})}}
+                {{ form_errors(form.etat) }}
+            </div>
+<br>
+            <div class="col-md-9">
+                {{ form_widget(form.idlivreur,  {'attr':{'class':'form-control'}}) }}
+                {{ form_errors(form.idlivreur) }}
+            </div>
+            <br>
+            <div class="col-md-9" >
+                {{ form_widget(form.region , {'attr':{'class':'form-control'}})}}
+                {{ form_errors(form.region) }}
+            </div>
+            <br>
+            <div class="col-md-9">
+                {{ form_widget(form.rueliv , {'attr':{'class':'form-control'}}) }}
+                {{ form_errors(form.rueliv) }}
+            </div>
+            <br>
+            <div class="col-md-6">
+                <div>
+                    <button type="button" data-target="#deleteModal" data-bs-toggle="modal" data-bs-target="#smallModal" class="btn btn-primary" >
+                        Modifier
+                    </button>
+                    <div class="modal fade" id="smallModal" tabindex="-1">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Avertissement</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Voulez vous enregistrer les modifications effectués !  </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    {{ form_widget(form.Update, {'attr':{'class':'btn btn-danger'}}) }}                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p >
+                </p>
+            </div>
+        </form>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

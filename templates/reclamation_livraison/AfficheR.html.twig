@@ -1,0 +1,55 @@
+{% extends 'base.html.twig'%}
+{% block body %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div style="margin-left:350px; margin-top: 100px">
+<h2>Espace des réclamations</h2>
+    <p><a href="/AjouterReclivraison" class="btn btn-outline-info">Ajouter réclamation</a></p>
+    {% for message in app.flashes('info')  %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-right: 400px">
+        {{ message }}
+        </div>{% endfor %}
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+                    <div class="cart-table-wrap">
+                        <table class="cart-table">
+                            <thead class="cart-table-head">
+                            <tr class="table-head-row">
+        <th>La reclamation</th>
+        <th>Réference de livraison</th>
+        <th>Etat de livraison</th>
+        <th>date de livraison</th>
+        <th>Sujet</th>
+        <th>Ajoutée le </th>
+        <th>Modifiée le </th>
+        <th>Update</th>
+        <th>Delete</th>
+                            </tr>
+                            </thead>
+
+    {% for s in reclamationlivraison %}
+    <tr >
+        <td>{{ s.reclamation }}</td>
+        <td>{{ s.idLivraison.reflivraison }}</td>
+        <td>{{ s.idLivraison.Etat }}</td>
+        <td>{{ s.idLivraison.date|date('Y-m-d H:i:s') }}</td>
+        <td>{{ s.sujetrec }}</td>
+        <td>{{ s.createdat|date('Y-m-d H:i:s') }}</td>
+        <td>{{ s.updatedat|date('Y-m-d H:i:s') }}</td>
+
+        <td><a href={{ path('updateR', {'id':s.idreclivv}) }}><i class='fas fa-edit' style='font-size:35px;color:green'></i></a></td>
+        <td><a href="{{ path('SuppReclivraison', {'id':s.idreclivv}) }}"><i class='fas fa-trash-alt' style='font-size:35px;color:red'></i></a></td>
+    </tr {% endfor %}>
+                        </table></div></div></div></div></div>
+</body>
+</html>
+{% endblock %}

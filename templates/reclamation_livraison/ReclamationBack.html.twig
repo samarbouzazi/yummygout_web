@@ -1,0 +1,22 @@
+{% extends 'base-back.html.twig'%}
+
+{% block body %}
+<div style="margin-left:350px; margin-top: 100px">
+    <h1>Liste des réclamations</h1>
+ {#  <p>filtrer</p>
+    <form id="filters">
+        {% for liv in livraisons %}
+        <p><input type="checkbox" name="livraisons[]" id="liv{{ liv.idLivraison }}"  value="{{ liv.idLivraison }}">
+            <label for="liv{{ liv.idLivraison }}"> {{liv.idlivreur.matricule}}</label></p>
+            {% endfor %}
+
+    </form> #}
+
+    <div id="content">
+        {% include "reclamation_livraison/content.html.twig" %}
+
+    </div>
+</div>{% endblock %}
+{#  {% block javascripts %}
+    <script src="{{ asset('/assets/Back-office/js/filters.js') }}"></script>
+{% endblock %}#}

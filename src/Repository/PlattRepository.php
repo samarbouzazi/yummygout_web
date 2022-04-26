@@ -73,6 +73,62 @@ class PlattRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
+    public function order_By_Nnom()
+
+    public function order_By_Nom()
+
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.Nomplat', 'ASC')
+            ->getQuery()->getResult();
+    }
+
+
+    /**
+     * Requête QueryBuilder
+     * */
+    public function orderBynom()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.nomplat', 'ASC')
+            ->getQuery()->getResult();
+    }
+
+    /**
+     * Requête QueryBuilder
+     * */
+    public function orderBydesc()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.descplat', 'ASC')
+            ->getQuery()->getResult();
+    }
+
+    /**
+     * Requête QueryBuilder
+     * */
+    public function orderByprixPlat()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.prixPlat', 'ASC')
+            ->getQuery()->getResult();
+    }
+
+    /**
+     * @return void
+     */
+    public function countByfour(){
+        $query = $this->createQueryBuilder('a')
+            ->join('a.idcatt','c')
+            ->select('c.nomcat as name, COUNT(a) as count')
+            ->groupBy('c')
+        ;
+        return $query->getQuery()->getResult();
+
+    }
+
+=======
+
 }
-//#SELECT p.Nomplat ,c.Nomcat FROM platt p INNER join categorie c on p.idcatt=c.idcatt where c.Nomcat="petit dej";#
 

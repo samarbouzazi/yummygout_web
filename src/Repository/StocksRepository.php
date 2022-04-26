@@ -89,4 +89,42 @@ class StocksRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @param $find
+     * @return float|int|mixed|string
+     */
+
+    public function findMulti($find)
+    {
+        $q=$this->createQueryBuilder('m')
+            ->where('m.nomf LIKE :find')
+            ->orWhere('m.prenomf LIKE :find')
+            ->orWhere('m.catf LIKE :find')
+            ->orWhere('m.telf LIKE :find')
+            ->orWhere('m.addf LIKE :find')
+            ->setParameter(':find',"%$find%");
+        return $q->getQuery()->getResult();
+    }
+    /**
+     * @return void
+     */
+    public function countByfour(){
+        $query = $this->createQueryBuilder('a')
+            ->join('a.idf','c')
+            ->select('c.nomf as name, COUNT(a) as count')
+            ->groupBy('c')
+        ;
+        return $query->getQuery()->getResult();
+
+    }
+    public function countByEvent(){
+        return $this->createQueryBuilder('a')
+            ->join('a.event', 'c')
+            ->addSelect('c.title as titre ,COUNT(a) as formationsNombre')
+            ->groupBy('c')
+            ->getQuery()
+            ->getResult();
+
+    }
+
 }

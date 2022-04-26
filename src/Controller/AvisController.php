@@ -34,6 +34,7 @@ class AvisController extends AbstractController
     public function afficher(AvisRepository $repository)
     {
         $avis = $repository->findAll();
+
         return $this->render('avis/Affiche.html.twig', ['av' => $avis]);
 
     }
@@ -175,5 +176,38 @@ class AvisController extends AbstractController
         ]);
 
     }
+    /**
+         * @Route("/like/{id}", name="like")
+         */
+
+        public function like(AvisRepository $repository,$id)
+        { $av=new avis();
+            $avis = $repository->findAll();
+            $av=$repository->find($id);
+            $av->setLikee($av->getLikee()+1);
+             $em = $this->getDoctrine()->getManager();
+                        $em->persist($av);
+                        $em->flush();
+
+            return $this->render('avis/affichef.html.twig', ['av' => $avis]);
+
+        }
+         /**
+                 * @Route("/dislike/{id}", name="dislike")
+                 */
+
+                public function dislike(AvisRepository $repository,$id)
+                { $av=new avis();
+                    $avis = $repository->findAll();
+                    $av=$repository->find($id);
+                    $av->setDeslike($av->getDeslike()+1);
+                     $em = $this->getDoctrine()->getManager();
+                                $em->persist($av);
+                                $em->flush();
+
+                    return $this->render('avis/affichef.html.twig', ['av' => $avis]);
+
+                }
+
 
 }
