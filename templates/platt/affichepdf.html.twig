@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <title>menu</title>
 
 </head>
@@ -36,10 +37,38 @@
         <th>prix </th>
 
 
+    <title>Document</title>
+</head>
+<body>
+<h1 style="margin-left: 25px; margin-left: 400px ; color: #658fd0; font-family: 'Arial Black'; font-size: xx-large">Plat</h1>
+<table   border="8" id="example" class="display" >
+    <thead>
+    <tr >
+        <th>
+            idcatt
+        </th>
+        <th>
+            Descplat
+        </th>
+        <th>
+            Nomplat
+        </th>
+        <th>
+            prix_plat
+        </th>
+        <th>
+            q_plat
+        </th>
+        <th>
+            stock
+        </th>
+
+
 
     </tr>
     </thead>
     <tbody>
+
     {% for i in plat %}>
         <br>
     <tr align="center">
@@ -57,6 +86,35 @@
 
     </tbody>
     {% endfor %}>
+
+    <tr {% for i in plat %}>
+        <td>
+            {{ i.idcatt.Nomcat }}
+        </td>
+        <td>
+            {{ i.Descplat }}
+        </td>
+
+        <td>
+            {{ i.Nomplat }}
+        </td>
+
+
+        <td>
+            {{ i.PrixPlat }}
+        </td>
+        <td>
+            {{ i.QPlat }}
+        </td>
+        <td>
+            {{ i.stock }}
+        </td>
+
+
+
+    </tr{% endfor %}>
+    </tbody>
+
     <script>
 
         $(document).ready(function() {
@@ -68,6 +126,7 @@
 
 </table>
 
+
 </div>
 </div>
 </div>
@@ -75,5 +134,8 @@
 <p class="text-warning bg-dark"></p>
 <p class="text-warning bg-dark"></p>
 <p class="text-warning bg-dark">Cher client, ce notre menu bonne appetit.</p>
+
+</div></div></div></div>
+
 </body>
 </html>

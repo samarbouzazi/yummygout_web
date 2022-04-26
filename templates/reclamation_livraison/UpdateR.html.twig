@@ -27,8 +27,12 @@
             <div class="contact-form">
                 {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
                 <p>
-                    {{ form_row(form.idLivraison, { 'attr':{'class':'form-control'} }) }}
+                    {{ form_widget(form.idLivraison, {'attr':{'class':'form-control'}}) }}
                     {{ form_errors(form.idLivraison) }}
+                </p>
+                <p>
+                    {{ form_widget(form.sujetrec, {'attr':{'class':'form-control'}}) }}
+                    {{ form_errors(form.sujetrec) }}
                 </p>
                 <p>
                     {{ form_widget(form.reclamation, {'attr':{'class':'form-control'}}) }}

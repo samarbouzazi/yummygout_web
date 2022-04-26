@@ -17,8 +17,6 @@ class AvisType extends AbstractType
     {
         $builder
 
-            ->add('likee')
-            ->add('deslike')
             ->add('descriptionavis')
             ->add('idClient',EntityType::class,
                 [

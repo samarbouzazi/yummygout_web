@@ -73,12 +73,17 @@ class PlattRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
     public function order_By_Nnom()
+
+    public function order_By_Nom()
+
     {
         return $this->createQueryBuilder('s')
             ->orderBy('s.Nomplat', 'ASC')
             ->getQuery()->getResult();
     }
+
 
     /**
      * Requête QueryBuilder
@@ -122,6 +127,8 @@ class PlattRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
 
     }
+
+=======
 
 }
 

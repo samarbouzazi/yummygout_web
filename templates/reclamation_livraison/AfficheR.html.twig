@@ -28,6 +28,7 @@
         <th>Réference de livraison</th>
         <th>Etat de livraison</th>
         <th>date de livraison</th>
+        <th>Sujet</th>
         <th>Ajoutée le </th>
         <th>Modifiée le </th>
         <th>Update</th>
@@ -41,8 +42,10 @@
         <td>{{ s.idLivraison.reflivraison }}</td>
         <td>{{ s.idLivraison.Etat }}</td>
         <td>{{ s.idLivraison.date|date('Y-m-d H:i:s') }}</td>
+        <td>{{ s.sujetrec }}</td>
         <td>{{ s.createdat|date('Y-m-d H:i:s') }}</td>
         <td>{{ s.updatedat|date('Y-m-d H:i:s') }}</td>
+
         <td><a href={{ path('updateR', {'id':s.idreclivv}) }}><i class='fas fa-edit' style='font-size:35px;color:green'></i></a></td>
         <td><a href="{{ path('SuppReclivraison', {'id':s.idreclivv}) }}"><i class='fas fa-trash-alt' style='font-size:35px;color:red'></i></a></td>
     </tr {% endfor %}>

@@ -1,0 +1,48 @@
+{% extends 'base-back.html.twig'%}
+{% block body %}
+<div style="margin-left:350px; margin-top: 100px">
+    {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+    <div class="col-md-9" >
+        {{ form_widget(form.title , {'attr':{'class':'form-control'}})}}
+        {{ form_errors(form.title) }}
+    </div>
+    <br>
+    <div class="col-md-9">
+        {{ form_widget(form.start ) }}
+        {{ form_errors(form.start) }}
+    </div>
+    <br>
+    <div class="col-md-9">
+        {{ form_widget(form.end) }}
+        {{ form_errors(form.end) }}
+    </div>
+    <br>
+    <div class="col-md-9">
+        {{ form_widget(form.description , {'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.description) }}
+    </div>
+    <br>
+    <div class="col-md-9">
+        {{ form_widget(form.allday ) }}
+        {{ form_errors(form.allday) }}
+    </div>
+    <br>
+    <div class="col-md-9">
+        {{ form_widget(form.backgroundcolor) }}
+        {{ form_errors(form.backgroundcolor) }}
+    </div>
+    <br>
+
+    <div class="col-md-9">
+        {{ form_widget(form.bordercolor) }}
+        {{ form_errors(form.bordercolor) }}
+    </div>
+    <br>
+    <div class="col-md-9">
+        {{ form_widget(form.textcolor) }}
+        {{ form_errors(form.textcolor) }}
+    </div>
+    {{ form_widget(form) }}
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}</div>
+    {% endblock %}

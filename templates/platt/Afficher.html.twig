@@ -34,6 +34,7 @@
                     <input type="text" name="search"><input type="submit" value="Recherche">
                 </form>#}
 
+
                     <a href="{{path('PDF') }}">  PDF </a>
                     <form>
                         <input id="impression" class="js-programmatic-set-val btn btn-outline-primary mr-1 mb-1s" name="impression" type="button" onclick="imprimer_page()" value="Print this page" />
@@ -46,6 +47,13 @@
 
 
                     <table  id="tableac" class="table table-striped">
+
+                    <form>
+                        <input id="impression" class="js-programmatic-set-val btn btn-outline-primary mr-1 mb-1s" name="impression" type="button" onclick="imprimer_page()" value="Print this page" />
+                    </form>
+                    <a href="{{path('PDF') }}">  PDF </a>
+                    <table   id="example" class="display" >
+
                         <thead>
                         <tr >
                             <th>
