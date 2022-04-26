@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Reclamantionlivraison
  *
@@ -24,11 +23,7 @@ class Reclamantionlivraison
 
     /**
      * @var string
-     * @Assert\Length(
-     *      min = 10,
-     *      max = 2555,
-     *      minMessage = "la reclamation doit contenir au moins 10 ",
-     *      maxMessage = "la reclamation doint contenir au plus 2555")
+     *
      * @ORM\Column(name="reclamation", type="string", length=255, nullable=false)
      */
     private $reclamation;
@@ -46,6 +41,20 @@ class Reclamantionlivraison
      * @ORM\Column(name="updatedat", type="datetime", nullable=false)
      */
     private $updatedat;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sujetrec", type="string", length=255, nullable=false)
+     */
+    private $sujetrec;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="clientname", type="string", length=255, nullable=false)
+     */
+    private $clientname;
 
     /**
      * @var \Livraison
@@ -94,6 +103,30 @@ class Reclamantionlivraison
     public function setUpdatedat(\DateTimeInterface $updatedat): self
     {
         $this->updatedat = $updatedat;
+
+        return $this;
+    }
+
+    public function getSujetrec(): ?string
+    {
+        return $this->sujetrec;
+    }
+
+    public function setSujetrec(string $sujetrec): self
+    {
+        $this->sujetrec = $sujetrec;
+
+        return $this;
+    }
+
+    public function getClientname(): ?string
+    {
+        return $this->clientname;
+    }
+
+    public function setClientname(string $clientname): self
+    {
+        $this->clientname = $clientname;
 
         return $this;
     }

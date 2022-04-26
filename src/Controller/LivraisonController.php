@@ -2,17 +2,24 @@
 
 namespace App\Controller;
 
+use App\Entity\Calendar;
+use App\Entity\Geocode;
+use App\Entity\GeocodeRepository;
 use App\Entity\Livraison;
 use App\Form\LivraisonType;
-use App\Form\RechercheType;
+use App\Form\UpdateLivraisonType;
+use App\Repository\CalendarRepository;
+use App\Repository\DeliveryRepository;
 use App\Repository\LivraisonRepository;
+use App\Repository\LivreurRepository;
+use App\Services\QrcodeService;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use DateTime;
 
 class LivraisonController extends AbstractController
 {
@@ -36,7 +43,7 @@ class LivraisonController extends AbstractController
         $livraison= $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         return $this->render('livraison/Affichel.html.twig', ['livraison'=>$livraison]);
     }
@@ -47,7 +54,6 @@ class LivraisonController extends AbstractController
      */
     public function Affichefrontlivraison(LivraisonRepository $repository){
         $livraison=$repository->findAll();
-
         return $this->render('livraison/Affichelivraisonfront.html.twig', ['livraison'=>$livraison]);
     }
     /**
@@ -63,40 +69,83 @@ class LivraisonController extends AbstractController
     /**
      * @Route("/Ajouterlivraison", name="Ajouterlivraison")
      */
-    function Add( Request $request, LivraisonRepository $repository):Response
+    function Add( Request $request, LivraisonRepository $repository,DeliveryRepository $repo, QrcodeService $qrcodeService):Response
     {
+        $c=0.0;
+        $frais=0.0;
+        $qrcode=null;
         $randomNumber = rand(100001, 999999);
         $livraison=new livraison();
         $livraison->setReflivraison($randomNumber);
         $form=$this->createForm(LivraisonType::class, $livraison);
         $form->add('Ajouter', SubmitType::class);
         $form->handleRequest($request);
-        $var=$repository->findOneBy(['idpanier' => ($livraison->getIdpanier())]);
-        if($form->isSubmitted()&& $form->isValid() && !$var){
+        if($form->isSubmitted()&& $form->isValid()){
+            $livreur=$repo->findOneBy(['disponibility'=>'oui', 'zone'=>$livraison->getRegion()]);
+            $livraison->setIdlivreur($livreur);
+            $livraison->setClient('amani');
             $em=$this->getDoctrine()->getManager();
             $em->persist($livraison);
             $em->flush();
             $this->addFlash(
                 'info',
-                'ajouté avec succés'
+                'ajouté avec succés, pour plus de détail scanner votre qr code'
             );
-            return $this->redirectToRoute('Affichel');
-        }elseif ($var){
-                $this->addFlash(
-                    'alerte',
-                    'Vérifier l existance de cette livraison déjà '
-                );
+            $calendar= new Calendar();
+            $titre=$calendar->setTitle(strval($livraison->getReflivraison()));
+            $start=$calendar->setStart($livraison->getDate());
+            $date=$calendar->getStart();
+            $dd=strtotime($livraison->getDate()->format('Y-m-d H:i:s'). ' +30 minutes');
+            $time = date('Y-m-d H:i:s',$dd);
+            $timend=DateTime::createFromFormat('Y-m-d H:i:s', $time, null);
+            $end=$calendar->setEnd($timend);
+            $description=$calendar->setDescription($livraison->getRueliv());
+            $allday=$calendar->setAllday(false);
+            $backcolor=$calendar->setBackgroundcolor("#00ffbb");
+            $border=$calendar->setBordercolor("#000000");
+            $textcolor=$calendar->setTextcolor("#000000");
+            //livreurrrrrrrrrrrrrrrr calendarrrrr
+            //$livr=$repo->findOneBy(['id'=>$livraison->getIdlivreur()]);
+            //$user=$repouser->findOneBy(['id'=>$livr->getIduser()]);
+            //$username=$user->getusername();
+            $emm=$this->getDoctrine()->getManager();
+            $liv=$calendar->setLivreur("amani.hadda@esprit.tn");
+            $livraisoncalendar=$calendar->setIdlivraison($livraison);
+            $emm->persist($calendar);
+            $emm->flush();
+            //$idd=$livreur->getId();
+            //$nb=0;
+            //$count=$repository->countlivraisonparlivreur($idd);
+            //foreach ($count as $nbre){
+             //   $nb = $nbre['nb'];}
+            //if($nb==6){
+            //  $persoliv=$repo->findOneBy(['id'=>$idd]);
+             //  $persoliv->setDisponibility('non');
+           // }
+            $c=$this->getDistance($livraison->getRegion());
+            if($c>15.0){
+                $frais=5.5;
             }
+            if($c<15.0){
+                $frais=3.0;
+            }
+           $qrcode=$qrcodeService->qrcode("le référence de livraison est : {$livraison->getReflivraison()}, l''etat est : {$livraison->getEtat()}, l'addresse est : {$livraison->getRueliv()}, {$livraison->getRegion()}, le livreur est : {$livreur->getMatricule()}, les frais de livraison est : {$frais} dt");
+            return $this->render('livraison/Addlivraison.html.twig',[
+                'form'=>$form->createView(),
+                'qrCode'=>$qrcode
+            ]);
+        }
         return $this->render('livraison/Addlivraison.html.twig',[
-            'form'=>$form->createView()
+            'form'=>$form->createView(),'qrCode'=>$qrcode
         ]);}
+
 
     /**
      * @Route("livraison/Update/{id}",name="update")
      */
     function update(LivraisonRepository $repository, $id, Request $request){
         $livraison=$repository->find($id);
-        $form=$this->createForm(LivraisonType::class,$livraison);
+        $form=$this->createForm(UpdateLivraisonType::class,$livraison);
         $form->add('Update',SubmitType::class);
         $form->handleRequest($request);
         if($form->isSubmitted()&& $form->isValid()){
@@ -123,7 +172,7 @@ class LivraisonController extends AbstractController
         $liv= $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         return $this->render('livraison/Affichel.html.twig',['livraison'=>$liv]);
     }
@@ -137,7 +186,7 @@ class LivraisonController extends AbstractController
         $liv= $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         return $this->render('livraison/Affichel.html.twig',['livraison'=>$liv]);
     }
@@ -151,7 +200,7 @@ class LivraisonController extends AbstractController
         $liv= $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         return $this->render('livraison/Affichel.html.twig',['livraison'=>$liv]);
     }
@@ -165,7 +214,7 @@ class LivraisonController extends AbstractController
         $liv= $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         return $this->render('livraison/Affichel.html.twig',['livraison'=>$liv]);
     }
@@ -179,7 +228,7 @@ class LivraisonController extends AbstractController
         $liv= $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         return $this->render('livraison/Affichel.html.twig',['livraison'=>$liv]);
     }
@@ -193,7 +242,7 @@ class LivraisonController extends AbstractController
         $liv= $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         return $this->render('livraison/Affichel.html.twig',['livraison'=>$liv]);
     }
@@ -207,7 +256,7 @@ class LivraisonController extends AbstractController
         $liv= $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         return $this->render('livraison/Affichel.html.twig',['livraison'=>$liv]);
     }
@@ -221,100 +270,148 @@ class LivraisonController extends AbstractController
         $liv= $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         return $this->render('livraison/Affichel.html.twig',['livraison'=>$liv]);
     }
     /**
      * @param LivraisonRepository $repository
      * @return Response
-     * @Route("livraison/panierasc", name="panierasc")
+     * @Route("livraison/regionasc", name="regionasc")
      */
-    function OrderBypanierasc(LivraisonRepository $repository, Request $request, PaginatorInterface $paginator){
-        $donnees=$repository->OrderByMatriculeasc();
+    function OrderByregionasc(LivraisonRepository $repository, Request $request, PaginatorInterface $paginator){
+        $donnees=$repository->OrderByRegionasc();
         $liv= $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         return $this->render('livraison/Affichel.html.twig',['livraison'=>$liv]);
     }
     /**
      * @param LivraisonRepository $repository
      * @return Response
-     * @Route("livraison/panierdesc", name="panierdesc")
+     * @Route("livraison/regiondesc", name="regiondesc")
      */
-    function OrderBypanierdesc(LivraisonRepository $repository, Request $request, PaginatorInterface $paginator){
-        $donnees=$repository->OrderByMatriculedesc();
+    function OrderByregiondesc(LivraisonRepository $repository, Request $request, PaginatorInterface $paginator){
+        $donnees=$repository->OrderByRegiondesc();
         $liv= $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         return $this->render('livraison/Affichel.html.twig',['livraison'=>$liv]);
     }
-    function getDistance($addressfrom, $addressto, $unit){
-        $apikey="AIzaSyCkG6ViKAIg4bnML4MsJzKe-F7sDx3WqSA";
-        $formattedAddrFrom= str_replace(' ', '+', $addressfrom);
-        $formattedAddrTo= str_replace(' ', '+', $addressto);
-        $geocodefrom= file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$formattedAddrFrom.'&sensor=false&key='.$apikey);
-        $outputfrom= json_decode($geocodefrom);
-        if(!empty($outputfrom->error_message)){
-            return $outputfrom->error_message;
+    /**
+     * @param LivraisonRepository $repository
+     * @return Response
+     * @Route("livraison/rueasc", name="rueasc")
+     */
+    function OrderByRueasc(LivraisonRepository $repository, Request $request, PaginatorInterface $paginator){
+        $donnees=$repository->OrderByRueasc();
+        $liv= $paginator->paginate(
+            $donnees,
+            $request->query->getInt('page', 1),
+            5
+        );
+        return $this->render('livraison/Affichel.html.twig',['livraison'=>$liv]);
+    }
+    /**
+     * @param LivraisonRepository $repository
+     * @return Response
+     * @Route("livraison/ruedesc", name="ruedesc")
+     */
+    function OrderByruedesc(LivraisonRepository $repository, Request $request, PaginatorInterface $paginator){
+        $donnees=$repository->OrderByRuedesc();
+        $liv= $paginator->paginate(
+            $donnees,
+            $request->query->getInt('page', 1),
+            5
+        );
+        return $this->render('livraison/Affichel.html.twig',['livraison'=>$liv]);
+    }
+    /**
+     * @param Request $request
+     * @param LivraisonRepository $repository
+     * @return Response
+     * @Route("liv/search" ,name="search")
+     */
+    function rechercher(Request $request, LivraisonRepository $repository, PaginatorInterface $paginator){
+        $searchvalue=$request->get('search');
+        $donnees= $repository->findByMultiple( $searchvalue);
+        $liv= $paginator->paginate(
+            $donnees,
+            $request->query->getInt('page', 1),
+            5
+        );
+        return $this->render('livraison/Affichel.html.twig', ['livraison'=>$liv]);
+
+    }
+    /**
+     * @param CalendarRepository $calendar
+     * @return Response
+     * @Route("/calendrier", name="calendrier")
+     */
+    public function caledendar(CalendarRepository $calendar): Response
+
+    {   $events = $calendar->findAll();
+        $rdvs = [];
+        foreach($events as $event) {
+            $rdvs[] = [
+                'id' => $event->getId(),
+                'start' => $event->getStart()->format('Y-m-d H:i:s'),
+                'end' => $event->getEnd()->format('Y-m-d H:i:s'),
+                'title' => $event->getTitle(),
+                'description' => $event->getDescription(),
+                'backgroundcolor' => $event->getBackgroundcolor(),
+                'bordercolor' => $event->getBordercolor(),
+                'textcolor' => $event->getTextcolor(),
+                'allday' => $event->getAllday()];
         }
-        $geocodeTo= file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$formattedAddrTo.'&sensor=false&key='.$apikey);
-        $outputTo= json_decode($geocodeTo);
-        if(!empty($outputTo->error_message)){
-            return $outputTo->error_message;
-        }
-        $latfrom= $outputfrom->results[0]->geometry->location->lat;
-        $longfrom= $outputfrom->results[0]->geometry->location->lng;
-        $latTo= $outputTo->results[0]->geometry->location->lat;
-        $longTo= $outputTo->results[0]->geometry->location->lng;
+        $data = json_encode($rdvs);
+        return $this->render('livraison/Calendar.html.twig',compact('data')
+        );
+    }
+
+    /**
+     * @return Response
+     * @Route("/tester/{region}/{rueliv}", name="tester")
+     */
+public function tester($region, $rueliv){
+    $addresse=$region.$rueliv;
+        $addressGps= str_replace(" ","+", $addresse);
+        return $this->render('livraison/geolocalisation.html.twig', ['adrgps'=>$addressGps]);
+}
+
+    /**
+     * @param $addressfrom
+     * @param $addressto
+     * @param $unit
+     * @param GeocodeRepository $repository
+     * @return float
+     * @Route("/frais")
+     */
+    function getDistance($addrssto){
+        $repository=$this->getDoctrine()->getRepository(Geocode::class);
+        $addressfrom='Ariana Medina';
+        $unit="k";
+        $from=$repository->findOneBy(['address'=>"Ariana Medina"]);
+        $latfrom= $from->getLatitude();
+        $longfrom= $from->getLongitude();
+        $to= $repository->findOneBy(['address'=>$addrssto]);
+        $latTo=$to->getLatitude();
+        $longTo= $to->getLongitude();
         $theta = $longfrom - $longTo;
         $dist = sin(deg2rad($latfrom)) * sin(deg2rad($latTo)) + cos(deg2rad($latfrom)) * cos(deg2rad($latTo)) * cos(deg2rad($theta));
         $dist= acos($dist);
         $dist = rad2deg($dist);
         $miles =$dist * 60 * 1.1515;
         $unit= strtoupper($unit);
+        $c=0.0;
         if ($unit=="k"){
-            return round($miles* 1.609344, 2).' km';
-        }elseif($unit=="M"){
-            return round($miles* 1609.344, 2).' meteres';
-        }else{
-            return round($miles, 2).' miles';
+            $c= round($miles* 1.609344, 2);
         }
+        return $c;
     }
 
-    /**
-     * @return Response
-     * @Route("/geo", name="geo")
-     */
-    function aff(){
-        $add='Cypress Hills, Brooklyn, NY, USA';
-        $ad='Pozone park, Queens, NY, USA';
-        $dist=$this->getDistance($add, $ad, "k");
-        return $this->render("livraison/Affichefront.html.twig",
-            [
-                'c'=>$dist
-            ]);
-    }
-
-    /**
-     * @param Request $request
-     * @param LivraisonRepository $repository
-     * @return Response
-     * @Route("liv/search" ,name="searchh")
-     */
-    function rechercher(Request $request, LivraisonRepository $repository, PaginatorInterface $paginator){
-        $searchvalue=$request->get('searchh');
-        $donnees= $repository->findByMultiple( $searchvalue);
-        $liv= $paginator->paginate(
-            $donnees,
-            $request->query->getInt('page', 1),
-            1
-        );
-        return $this->render('livraison/Affichel.html.twig', ['livraison'=>$liv]);
-
-    }
-    }
+}

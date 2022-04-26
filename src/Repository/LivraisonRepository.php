@@ -113,29 +113,48 @@ class LivraisonRepository extends ServiceEntityRepository
         $query=$em->createQuery('select l from App\Entity\livraison l order by l.idlivreur DESC');
         return $query->getResult();
     }
-    public function OrderBypanierasc(){
+    public function OrderByRueasc(){
         $em=$this->getEntityManager();
-        $query=$em->createQuery('select l from App\Entity\livraison l order by l.idpanier ASC');
+        $query=$em->createQuery('select l from App\Entity\livraison l order by l.rueliv ASC');
         return $query->getResult();
     }
-    public function OrderBypanierdesc(){
+    public function OrderByRuedesc(){
         $em=$this->getEntityManager();
-        $query=$em->createQuery('select l from App\Entity\livraison l order by l.idpanier DESC');
+        $query=$em->createQuery('select l from App\Entity\livraison l order by l.rueliv DESC');
+        return $query->getResult();
+    }
+    public function OrderByRegionasc(){
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('select l from App\Entity\livraison l order by l.region ASC');
+        return $query->getResult();
+    }
+    public function OrderByRegiondesc(){
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('select l from App\Entity\livraison l order by l.region DESC');
         return $query->getResult();
     }
  public function findByMultiple($searchValue)
     {
         return $this->createQueryBuilder('l')
-            ->join('l.idpanier', 'p')
             ->join('l.idlivreur', 'liv')
-            ->addSelect('p')
             ->addSelect('liv')
-            ->where('l.reflivraison LIKE :ref or l.etat LIKE :etat or l.date LIKE :date or p.idpanier Like :panier or liv.matricule LIKE :livreur')
+            ->where('l.reflivraison LIKE :ref or l.etat LIKE :etat or l.date LIKE :date or l.rueliv Like :rue or l.region Like :region or liv.matricule LIKE :livreur')
             ->setParameters(
                 ['ref' => '%'.$searchValue.'%', 'etat'=>'%'.$searchValue.'%',
-                    'date'=>'%'.$searchValue.'%' , 'panier'=>'%'.$searchValue.'%', 'livreur'=>'%'.$searchValue.'%'
+                    'date'=>'%'.$searchValue.'%' , 'rue'=>'%'.$searchValue.'%', 'region'=>'%'.$searchValue.'%', 'livreur'=>'%'.$searchValue.'%'
                 ])
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param $idd
+     * @return number of "count"
+     */
+    public function countlivraisonparlivreur($idd){
+        return $this->createQueryBuilder('l')
+            ->select('COUNT(l) as nb')->where('l.idlivreur = :idliv')
+            ->setParameter('idliv',$idd)->getQuery()->getResult();
+    }
+
 }
