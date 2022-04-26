@@ -1,7 +1,8 @@
 <?php
-namespace App\Repository;
-use App\Entity\Avis;
 
+namespace App\Repository;
+
+use App\Entity\Avis;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -13,12 +14,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Avis[]    findAll()
  * @method Avis[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-
-
-
 class AvisRepository extends ServiceEntityRepository
 {
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Avis::class);
@@ -49,15 +46,15 @@ class AvisRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Classroom[] Returns an array of Classroom objects
+    //  * @return Avis[] Returns an array of Avis objects
     //  */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
+            ->orderBy('a.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -66,15 +63,14 @@ class AvisRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Classroom
+    public function findOneBySomeField($value): ?Avis
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
     */
-
 }

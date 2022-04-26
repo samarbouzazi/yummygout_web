@@ -18,13 +18,23 @@
             </div>
 <br>
             <div class="col-md-9">
-                {{ form_widget(form.idpanier , {'attr':{'class':'form-control'}})}}
-                {{ form_errors(form.idpanier) }}
+                {{ form_widget(form.etat , {'attr':{'class':'form-control'}})}}
+                {{ form_errors(form.etat) }}
             </div>
 <br>
             <div class="col-md-9">
                 {{ form_widget(form.idlivreur,  {'attr':{'class':'form-control'}}) }}
                 {{ form_errors(form.idlivreur) }}
+            </div>
+            <br>
+            <div class="col-md-9" >
+                {{ form_widget(form.region , {'attr':{'class':'form-control'}})}}
+                {{ form_errors(form.region) }}
+            </div>
+            <br>
+            <div class="col-md-9">
+                {{ form_widget(form.rueliv , {'attr':{'class':'form-control'}}) }}
+                {{ form_errors(form.rueliv) }}
             </div>
             <br>
             <div class="col-md-6">

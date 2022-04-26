@@ -1,0 +1,57 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Calendar index{% endblock %}
+
+{% block body %}
+    <h1>Calendar index</h1>
+<div style="margin-left:330px; margin-top: 50px; margin-right: 30px">
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <!-- Table with stripped rows -->
+                    <br>
+                   <h1>Vos rendez-vous</h1>
+                    <a href="{{ path('app_calendarr_new') }}">Ajouter un rendez-vous</a>
+                    <table  id="tableac" class="table table-striped">
+                        <thead>
+            <tr>
+                <th scope="col" >Title</th>
+                <th scope="col" >Start</th>
+                <th scope="col" >End</th>
+                <th scope="col" >Description</th>
+                <th scope="col" >Allday</th>
+                <th scope="col" >Backgroundcolor</th>
+                <th scope="col" >Bordercolor</th>
+                <th scope="col" >Textcolor</th>
+                <th scope="col" >actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for calendar in calendars %}
+            <tr>
+                <td>{{ calendar.title }}</td>
+                <td>{{ calendar.start ? calendar.start|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ calendar.end ? calendar.end|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ calendar.description }}</td>
+                <td>{{ calendar.allday ? 'Yes' : 'No' }}</td>
+                <td>{{ calendar.backgroundcolor }}</td>
+                <td>{{ calendar.bordercolor }}</td>
+                <td>{{ calendar.textcolor }}</td>
+                <td>
+
+                    <a href="{{ path('app_calendarr_edit', {'id': calendar.id}) }}">edit</a>
+                    <a href="{{ path('app_calendarr_delete', {'id': calendar.id}) }}">delete</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+                    </table></div></div></div></div></section></div>
+
+    <a href="{{ path('app_calendarr_new') }}">Create new</a>
+{% endblock %}

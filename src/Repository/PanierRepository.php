@@ -44,20 +44,7 @@ class PanierRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
-    /**
-     * @param $id
-     * @return float|int|mixed|string
-     */
-    public function list($id)
-    {
-        return $this->createQueryBuilder('p')
-            ->join('p.idplat', 'pl')
-            ->addSelect('pl')
-            ->where('pl.idplat=:id')
-            ->setParameter('id',$id)
-            ->getQuery()
-            ->getResult();
-    }
+
     // /**
     //  * @return Panier[] Returns an array of Panier objects
     //  */
@@ -85,7 +72,5 @@ class PanierRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-
-}
-*/
+    */
 }
