@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\RoleRepository;
+use App\Repository\ReportUserRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=RoleRepository::class)
+ * @ORM\Entity(repositoryClass=ReportUserRepository::class)
  */
-class Role
+class ReportUser
 {
     /**
      * @ORM\Id
@@ -18,14 +18,9 @@ class Role
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="Roles")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reportUsers")
      */
     private $user;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Roles::class, inversedBy="role")
-     */
-    private $roles;
 
     public function getId(): ?int
     {
@@ -40,18 +35,6 @@ class Role
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getRoles(): ?Roles
-    {
-        return $this->roles;
-    }
-
-    public function setRoles(?Roles $roles): self
-    {
-        $this->roles = $roles;
 
         return $this;
     }

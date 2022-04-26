@@ -4,10 +4,13 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType ;
+
 
 
 
@@ -25,7 +28,7 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180)
+     * @ORM\Column(type="string", length=180,nullable=false)
      * @Assert\NotBlank(message= "email field is empty !")
      */
     private $email;
@@ -40,9 +43,9 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=false)
      * @Assert\Length(
      *      min = 6,
-     *      max = 20,
-     *      minMessage = "Your first name must be at least {{ limit }} characters long",
-     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters",
+     *
+     *      minMessage = "Your password must be at least {{ limit }} characters long",
+     *
      *     )
      *
      */
@@ -53,14 +56,13 @@ class User implements UserInterface
      */
     private $isVerified = false;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Role::class, mappedBy="user")
-     */
-    private $Roles;
+
 
     public function __construct()
     {
         $this->Roles = new ArrayCollection();
+        $this->reportUsers = new ArrayCollection();
+        $this->passwordTokens = new ArrayCollection();
     }
 
     /**
@@ -119,14 +121,94 @@ class User implements UserInterface
     /**
      * @var string|null
      *
-     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     * @ORM\Column(name="image", type="string", length=255, nullable=false)
      */
     private $image;
 
+
     /**
-     * @ORM\OneToOne(targetEntity=Personnell::class, mappedBy="user", cascade={"persist", "remove"})
+     * @var boolean
+     *
+     * @ORM\Column(name="active", type="boolean", nullable=false )
      */
-    private $personnell;
+    private $active = true;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     * * @Assert\NotBlank(message= "Captcha field is empty !")
+     */
+    private $captcha;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+
+    private $facebookID;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+
+    private $facebookAccessToken;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ReportUser::class, mappedBy="user")
+     */
+    private $reportUsers;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ResetPasswordRequest::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $resetpasswordrequest;
+
+    /**
+     * @return mixed
+     */
+    public function getFacebookID()
+    {
+        return $this->facebookID;
+    }
+
+    /**
+     * @param mixed $facebookID
+     */
+    public function setFacebookID($facebookID): void
+    {
+        $this->facebookID = $facebookID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFacebookAccessToken()
+    {
+        return $this->facebookAccessToken;
+    }
+
+    /**
+     * @param mixed $facebookAccessToken
+     */
+    public function setFacebookAccessToken($facebookAccessToken): void
+    {
+        $this->facebookAccessToken = $facebookAccessToken;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
+    }
 
     /**
      * @return string|null
@@ -150,24 +232,14 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
 
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
 
     /**
      * A visual identifier that represents this user.
      *
      * @see UserInterface
      */
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return (string) $this->email;
     }
@@ -194,7 +266,7 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -226,17 +298,22 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function isVerified(): bool
+    /**
+     * @return mixed
+     */
+    public function getEmail()
     {
-        return $this->isVerified;
+        return $this->email;
     }
 
-    public function setIsVerified(bool $isVerified): self
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
     {
-        $this->isVerified = $isVerified;
-
-        return $this;
+        $this->email = $email;
     }
+
 
     public function getAddress(): ?string
     {
@@ -250,10 +327,23 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getIsVerified(): ?bool
+    /**
+     * @return mixed
+     */
+    public function getCaptcha()
     {
-        return $this->isVerified;
+        return $this->captcha;
     }
+
+    /**
+     * @param mixed $captcha
+     */
+    public function setCaptcha($captcha): void
+    {
+        $this->captcha = $captcha;
+    }
+
+
 
     public function getPhone(): ?int
     {
@@ -334,6 +424,82 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
 
+    /**
+     * @param bool $isVerified
+     */
+    public function setIsVerified(bool $isVerified): void
+    {
+        $this->isVerified = $isVerified;
+    }
+
+
+
+    /**
+     * @return Collection|ReportUser[]
+     */
+    public function getReportUsers(): Collection
+    {
+        return $this->reportUsers;
+    }
+
+    public function addReportUser(ReportUser $reportUser): self
+    {
+        if (!$this->reportUsers->contains($reportUser)) {
+            $this->reportUsers[] = $reportUser;
+            $reportUser->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportUser(ReportUser $reportUser): self
+    {
+        if ($this->reportUsers->removeElement($reportUser)) {
+            // set the owning side to null (unless already changed)
+            if ($reportUser->getUser() === $this) {
+                $reportUser->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ResetPasswordRequest[]
+     */
+    public function getResetpasswordrequest(): Collection
+    {
+        return $this->resetpasswordrequest;
+    }
+
+    public function addResetpasswordrequest(ResetPasswordRequest $resetPasswordRequest): self
+    {
+        if (!$this->resetpasswordrequest->contains($resetPasswordRequest)) {
+            $this->resetpasswordrequest[] = $resetPasswordRequest;
+            $resetPasswordRequest->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResetpasswordrequest(ResetPasswordRequest $resetPasswordRequest): self
+    {
+        if ($this->resetpasswordrequest->removeElement($resetPasswordRequest)) {
+            // set the owning side to null (unless already changed)
+            if ($resetPasswordRequest->getUser() === $this) {
+                $resetPasswordRequest->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 
 }

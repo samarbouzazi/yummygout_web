@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\PersonnellRepository")
  * @UniqueEntity(fields={"email", "cinp"}, message="already exists")
  */
-class Personnell
+class Personnell implements \Symfony\Component\Security\Core\User\UserInterface
 {
     /**
      * @var int
@@ -108,6 +108,11 @@ class Personnell
     private $nbheure;
 
     /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="Date_embauche", type="date", nullable=false)
@@ -121,6 +126,34 @@ class Personnell
      * @ORM\Column(name="Disponibilite", type="boolean", nullable=true)
      */
     private $disponibilite;
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string", length=255, nullable=false)
+     * @Assert\Length(
+     *      min = 6,
+     *
+     *      minMessage = "Your password must be at least {{ limit }} characters long",
+     *
+     *     )
+     *
+     */
+    private $password;
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
 
     /**
      * @var int
@@ -141,6 +174,8 @@ class Personnell
      * @var string|null
      *
      * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message= "image field is empty !")
+
      */
     private $image;
 
@@ -151,13 +186,45 @@ class Personnell
      */
     private $zonegeo;
 
+
     /**
-     * @ORM\OneToOne(targetEntity=User::class, inversedBy="personnell", cascade={"persist", "remove"})
+     * @ORM\Column(type="string", length=255, nullable=false)
+     * * @Assert\NotBlank(message= "Captcha field is empty !")
      */
-    private $user;
+    private $captcha;
 
+    /**
+     * @return mixed
+     */
+    public function getCaptcha()
+    {
+        return $this->captcha;
+    }
 
+    /**
+     * @param mixed $captcha
+     */
+    public function setCaptcha($captcha): void
+    {
+        $this->captcha = $captcha;
+    }
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
 
+        return array_unique($roles);
+    }
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
     public function getIdp(): ?int
     {
         return $this->idp;
@@ -346,20 +413,19 @@ class Personnell
         $this->disponibilite = $disponibilite;
     }
 
-    public function getUser(): ?User
+
+    public function getSalt()
     {
-        return $this->user;
+        // TODO: Implement getSalt() method.
     }
 
-    public function setUser(?User $user): self
+    public function getUsername()
     {
-        $this->user = $user;
-
-        return $this;
+        // TODO: Implement getUsername() method.
     }
 
-
-
-
-
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
 }
