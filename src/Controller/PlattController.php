@@ -8,6 +8,8 @@ use App\Form\CategoriesType;
 use App\Form\PlatType;
 use App\Repository\CategorieRepository;
 use App\Repository\PlattRepository;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
+use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use MercurySeries\FlashyBundle\FlashyNotifier;
@@ -16,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+
 
 class PlattController extends AbstractController
 {
@@ -191,21 +194,61 @@ class PlattController extends AbstractController
 
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
+        //l'image est située au niveau du dossier public
+        $png = file_get_contents("l.png");
+        $pngbase64 = base64_encode($png);
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('platt/affichepdf.html.twig', [
-            'plat' => $plattRepository->findAll(),
+            "img64"=>$pngbase64,
+            'plat' => $plattRepository->findAll()
         ]);
 
         // Load HTML to Dompdf
         $dompdf->loadHtml($html);
+
         // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
         $dompdf->setPaper('A4', 'portrait');
 
         // Render the HTML as PDF
         $dompdf->render();
-        // Output the generated PDF to Browser (inline view)
+
+        // Output the generated PDF to Browser (force download)
         $dompdf->stream("ListeDesplats.pdf", [
-            "plat" => true
+
+            "plat" => true,
         ]);
+    }
+
+    /**
+     * @Route("/trit", name="trit")
+     */
+    public function OrderBytel(PlattRepository $repository,Request $requestr)
+    {
+        $four = $repository->orderBynom();
+
+        return $this->render('Platt/Afficher.html.twig',
+            ['plat' => $four]);
+    }
+
+    /**
+     * @Route("/tritt", name="tritt")
+     */
+    public function OrderBydesc(PlattRepository $repository,Request $requestr)
+    {
+        $four = $repository->orderBydesc();
+
+        return $this->render('Platt/Afficher.html.twig',
+            ['plat' => $four]);
+    }
+
+    /**
+     * @Route("/trittt", name="trittt")
+     */
+    public function OrderByprix(PlattRepository $repository,Request $requestr)
+    {
+        $four = $repository->orderByprixPlat();
+
+        return $this->render('Platt/Afficher.html.twig',
+            ['plat' => $four]);
     }
 }

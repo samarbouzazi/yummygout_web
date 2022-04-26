@@ -73,11 +73,54 @@ class PlattRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function order_By_Nom()
+    public function order_By_Nnom()
     {
         return $this->createQueryBuilder('s')
             ->orderBy('s.Nomplat', 'ASC')
             ->getQuery()->getResult();
+    }
+
+    /**
+     * Requête QueryBuilder
+     * */
+    public function orderBynom()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.nomplat', 'ASC')
+            ->getQuery()->getResult();
+    }
+
+    /**
+     * Requête QueryBuilder
+     * */
+    public function orderBydesc()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.descplat', 'ASC')
+            ->getQuery()->getResult();
+    }
+
+    /**
+     * Requête QueryBuilder
+     * */
+    public function orderByprixPlat()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.prixPlat', 'ASC')
+            ->getQuery()->getResult();
+    }
+
+    /**
+     * @return void
+     */
+    public function countByfour(){
+        $query = $this->createQueryBuilder('a')
+            ->join('a.idcatt','c')
+            ->select('c.nomcat as name, COUNT(a) as count')
+            ->groupBy('c')
+        ;
+        return $query->getQuery()->getResult();
+
     }
 
 }
