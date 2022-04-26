@@ -32,7 +32,7 @@ class Fournisseurs
     /**
      * @var string
      *
-     * @ORM\Column(name="nomf", type="string", length=255, nullable=false)*
+     * @ORM\Column(name="nomf", type="string", length=255, nullable=false)
      * @Assert\NotBlank(message="nom est obligatoire")
      */
     private $nomf;
@@ -56,7 +56,7 @@ class Fournisseurs
     /**
      * @var int
      *
-     * @ORM\Column(name="telf", type="integer", nullable=false, length=8)
+     * @ORM\Column(name="telf", type="integer", nullable=false)
      * @Assert\Length(
      *      min = 8,
      *      max = 8,
@@ -76,10 +76,23 @@ class Fournisseurs
      * @var string
      *
      * @ORM\Column(name="addf", type="string", length=255, nullable=false)
+     * @ORM\Column(name="addf", type="string", length=255, nullable=false)
      * @Assert\NotBlank(message="Email is required")
      * @Assert\Email(message = "The email '{{ value }}' is not valid")
      */
     private $addf;
+
+    protected $captchaCode;
+
+    public function getCaptchaCode()
+    {
+        return $this->captchaCode;
+    }
+
+    public function setCaptchaCode($captchaCode)
+    {
+        $this->captchaCode = $captchaCode;
+    }
 
     public function getIdf(): ?int
     {

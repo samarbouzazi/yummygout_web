@@ -27,6 +27,7 @@ class Categorie
      * @var string
      *
      * @ORM\Column(name="Nomcat", type="string", length=255, nullable=false)
+
      */
     private $nomcat;
 

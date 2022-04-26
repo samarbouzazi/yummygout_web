@@ -79,4 +79,53 @@ class FournisseursRepository extends ServiceEntityRepository
             ->setParameter('nomf','%'.$nomf.'%')
             ->getQuery()->getResult();
     }
+
+
+    /**
+     * Requête QueryBuilder
+     * */
+    public function orderByNom()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.nomf', 'ASC')
+            ->getQuery()->getResult();
+    }
+    /**
+     * Requête QueryBuilder
+     * */
+    public function orderByPrenom()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.prenomf', 'ASC')
+            ->getQuery()->getResult();
+    }
+    /**
+     * Requête QueryBuilder
+     * */
+    public function orderByEmail()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.addf', 'ASC')
+            ->getQuery()->getResult();
+    }
+    /**
+     * Requête QueryBuilder
+     * */
+    public function orderByCateg()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.catf', 'ASC')
+            ->getQuery()->getResult();
+    }
+    /**
+     * Requête QueryBuilder
+     * */
+    public function orderBytel()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.telf', 'ASC')
+            ->getQuery()->getResult();
+    }
 }
+
+
