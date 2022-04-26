@@ -1,0 +1,154 @@
+
+{% block title%} {% endblock %}
+<head>
+<style>
+    /** Define the margins of your page **/
+    @page {
+        margin: 100px 25px;
+    }
+
+    header {
+        position: fixed;
+        top: -60px;
+        left: 0px;
+        right: 0px;
+        height: 50px;
+
+        /** Extra personal styles **/
+        background-color: #ccdbf1;
+        font-family: sans-serif;
+        color: black;
+        text-align: center;
+        line-height: 35px;
+    }
+
+    footer {
+        position: fixed;
+        bottom: -60px;
+        left: 0px;
+        right: 0px;
+        height: 50px;
+
+        /** Extra personal styles **/
+        background-color: #ccdbf1;
+        font-family: sans-serif;
+        color: black;
+        text-align: center;
+        line-height: 35px;
+    }
+    table {
+
+        caption-side: bottom;
+        text-align: center;
+        border: medium solid #6495ed;
+        border-collapse: collapse;
+        width: 50%;
+    }
+    th {
+
+        font-family: monospace;
+        border: thin solid #6495ed;
+        width: 50%;
+        padding: 5px;
+        background-color: #D0E3FA;
+        /*background-image: url(a.jpg);*/
+    }
+    td { ;
+        font-family: sans-serif;
+        border: thin solid #6495ed;
+        width: 50%;
+        padding: 5px;
+        text-align: center;
+        background-color: #ffffff;
+    }
+    caption {
+        text-align: center;
+        font-family: sans-serif;
+        color: darkred;
+    }
+    img{
+        width:100px;
+        margin:0px;
+
+    }
+</style>
+</head>
+
+
+
+
+{% block body %}
+
+    <header>
+        <div class="inner-div">
+        <h1 class="text-danger">Liste des commandes
+        </h1>
+            <img src='data:image;base64,<?= {{ img64  }};?>' />
+        </div>
+    </header>
+
+    <footer>
+        Copyright &copy; <?php echo date("Y");?><strong><span>YummyGout Team</span></strong>. All Rights Reserved
+
+    </footer>
+
+
+
+    <main id ="main" class="main">
+        <div style="margin-top: 30px ; margin-left: 50px">
+
+              <h3 style="font-family: 'Bodoni MT Condensed'">Nom client : {{ userr }}</h3>
+
+
+
+        </div>
+            <div style="margin-top: 30px ; margin-left: 210px">
+                <br>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-10 col-md-12">
+                            <div class="cart-table-wrap">
+
+                                <CENTER>     <table class="cart-table" width=90% >
+                                    <thead class="cart-table-head">
+                                    <tr class="table-head-row">
+
+                                        <th  >Nom plat</th>
+                                        <th> Prix Plat</th>
+                                        <th>quantite</th>
+                                        <th>Total</th>
+
+
+                                    </tr>
+
+                                    </thead>
+                                    {% set total=0 %}
+                                    {% for p in panierr  %}
+
+                                    <tr>
+
+                                        <td >{{ p.idplat.Nomplat }}</td>
+                                        <td>{{ p.idplat.prixPlat }}</td>
+                                        <td>{{ p.quantite }}</td>
+
+                                        <td>{{ p.total  }} dt</td>
+
+                                    </tr {% endfor %}>
+                                    <tfoot>
+
+
+                                </table></CENTER>
+
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+
+            <br>
+
+
+    </main>
+
+{% endblock %}

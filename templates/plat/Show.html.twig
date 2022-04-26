@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div class="cart-section mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12">
+                <div class="cart-table-wrap">
+                    <table class="cart-table">
+
+                        <div class="product-section mt-150 mb-150">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <thead class="cart-table-head">
+                                        <tr class="table-head-row">
+                                            <th class="product-name">Name</th>
+                                            <th class="product-price">Price</th>
+                                            <th class="product-quantity">Quantity</th>
+                                            <th class="product-total">Total</th>
+                                        </tr>
+                                        </thead>
+
+</div>
+                                </div>
+                            </div>
+                        </div>
+                        <tbody>
+                        <tr {% for i in panier %}>
+                            <td>
+                                {{ i.idplat.Nomplat }}
+                            </td>
+                            <td>
+                                {{ i.idplat.PrixPlat }}
+                            </td>
+
+                            <td><input></td>
+
+                        </tr{% endfor %}>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+{% endblock  %}
