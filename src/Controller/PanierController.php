@@ -5,16 +5,19 @@ namespace App\Controller;
 use App\Entity\Clientinfo;
 use App\Entity\Panier;
 use App\Entity\Platt;
-use App\Form\PanierType;
+use App\Form\FormPanierType;
 use App\Repository\OrderRepository;
 use App\Repository\PanierRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 
 class PanierController extends Controller
 {
@@ -41,22 +44,28 @@ class PanierController extends Controller
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            1
+            3
         );
         return $this->render('panier/AfficheP.html.twig',['panier'=>$panier]);
     }
-    /**
-     * @param PanierRepository $repository
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/panier/Affichefront" , name="Affichefront")
-     */
-    public function Affichefront(PanierRepository $repository){
-
-        $panier=$repository->findAll();
-
-        return $this->render('panier/Affichagefront.html.twig',['panier'=>$panier]);
-
-    }
+//    /**
+//     * @param PanierRepository $repository
+//     * @return \Symfony\Component\HttpFoundation\Response
+//     * @Route("/panier/Affichefront" , name="Affichefront")
+//     */
+//    public function Affichefront(PanierRepository $repository, PaginatorInterface $paginator,Request $request){
+//        $userr=$this->getUser()->getUsername();
+//        $allpanier=$repository->findByclient($userr);
+//        $panierr = $paginator->paginate(
+//        // Doctrine Query, not results
+//            $allpanier,
+//            // Define the page parameter
+//            $request->query->getInt('page', 1),
+//            // Items per page
+//            3
+//        );
+//        return $this->render('panier/Affichagefront.html.twig',['panierr'=>$panierr]);
+//    }
     /**
      * @Route("/Supp/{id}" ,  name="supp")
      */
@@ -69,42 +78,16 @@ class PanierController extends Controller
             'info',
             'commande Supprimée'
         );
+    /*$flashy->success('Event created!', 'http://your-awesome-link.com');*/
         return $this->redirectToRoute('AfficheP')  ;
 
-    }
-
-
-    /**
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/Panier/Addp" , name="Addp")
-     */
-    function Add(\Symfony\Component\HttpFoundation\Request $request  ){
-        $panier=new Panier();
-        $form=$this->createForm(PanierType::class , $panier);
-        $form->add('ajouter',SubmitType::class);
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form ->isValid() ){
-            $em=$this->getDoctrine()->getManager();
-            $em->persist($panier);
-            $em->flush();
-            return $this->redirectToRoute('AfficheP');
-
-        }
-        $this->addFlash(
-            'info',
-            'commande Ajouté'
-        );
-        return $this->render('panier/addp.html.twig',[
-            'form'=>$form->createView()
-        ]);
     }
     /**
      * @Route("panier/Update/{id}",name="update")
      */
     function Update(PanierRepository $repository, $id , \Symfony\Component\HttpFoundation\Request $request){
         $panier=$repository->find($id);
-        $form=$this->createForm(PanierType::class,$panier);
+        $form=$this->createForm(FormPanierType::class,$panier);
         $form->add('Update',SubmitType::class);
         $form->handleRequest($request);
 
@@ -138,7 +121,7 @@ class PanierController extends Controller
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            1
+            3
         );
         return $this->render('panier/AfficheP.html.twig',['panier'=>$panier]);
     }
@@ -155,7 +138,7 @@ class PanierController extends Controller
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            1
+            3
         );
         return $this->render('panier/AfficheP.html.twig',['panier'=>$panier]);
     }
@@ -172,7 +155,7 @@ class PanierController extends Controller
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            1
+            3
         );
         return $this->render('panier/AfficheP.html.twig',['panier'=>$panier]);
     }
@@ -189,7 +172,7 @@ class PanierController extends Controller
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            1
+            3
         );
         return $this->render('panier/AfficheP.html.twig',['panier'=>$panier]);
     }
@@ -206,7 +189,7 @@ class PanierController extends Controller
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            1
+            3
         );
         return $this->render('panier/AfficheP.html.twig',['panier'=>$panier]);
     }
@@ -216,14 +199,14 @@ class PanierController extends Controller
      * @Route("panier/idd", name="idd")
      */
     function OrderByidAscSQL(PanierRepository $repository , PaginatorInterface $paginator,Request $request){
-        $allpanier=$repository->OrderByprixtasc();
+        $allpanier=$repository->OrderByidasc();
         $panier = $paginator->paginate(
         // Doctrine Query, not results
             $allpanier,
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            1
+            3
         );
         return $this->render('panier/AfficheP.html.twig',['panier'=>$panier]);
     }
@@ -240,7 +223,7 @@ class PanierController extends Controller
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            1
+            3
         );
         return $this->render('panier/AfficheP.html.twig',
             ['panier' => $allpanier]);
@@ -259,7 +242,7 @@ class PanierController extends Controller
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            1
+            3
         );
         return $this->render('panier/AfficheP.html.twig',['panier'=>$panier]);
     }
@@ -276,8 +259,22 @@ class PanierController extends Controller
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
-            1
+            3
         );
         return $this->render('panier/AfficheP.html.twig',['panier'=>$panier]);
+    }
+
+    /**
+     * @Route("/listePanier ", name="listePanier")
+     */
+    public function searchPanier(Request $request,NormalizerInterface $Normalizer , PanierRepository $panierRepository)
+    {
+//        $repository = $this->getDoctrine()->getRepository(Panier::class);
+        $requestString=$request->get('searchValue');
+        $panier= $panierRepository->SearchPanier($requestString);
+        $jsonContent = $Normalizer->normalize($panier, 'json',['groups'=>'paniers']);
+        $retour=json_encode($jsonContent);
+        return new Response($retour);
+
     }
 }
