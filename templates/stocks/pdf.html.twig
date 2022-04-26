@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Example 1</title>
+    <link rel="stylesheet" href={{asset('style.css')}} media="all" />
+</head>
+<body>
+
+<div>
+    <img src='data:image;base64,<?= {{ img64  }};?>' />
+</div>
+<header class="clearfix">
+
+
+
+
+    <br>
+    <div id="company" class="clearfix">
+        <h1 class="align-center"><div>Yummy Gout</div></h1>
+
+        <br>
+
+    </div>
+    <br>
+    <h1 class="align-center"><div>Liste des produits en stock</div></h1>
+    <br>
+</header>
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    table.center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+<main>
+    <table border="2" class="center">
+        <thead>
+        <tr>
+            <th >nom produit</th>
+            <th >date d'expiration</th>
+            <th>prix unitaire</th>
+            <th>quantité</th>
+            <th>fournisseur</th>
+
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for st in sto %}
+            <tr>
+                <td > {{ st.noms  }}</td>
+                <td> {{ st.dateFinS|date("d/m/Y") }}</td>
+                <td> {{ st.qts}}</td>
+                <td> {{ st.prixs}} </td>
+                <td>{{ st.idf.nomf }}  {{ st.idf.prenomf }}</td>
+
+
+            </tr>
+
+
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+
+</main>
+
+</body>
+<style>
+    body{
+        font:normal 12px/20PX "Liberation sans", Arial, Helvetica, sans-serif;
+        color:#585858;
+    }
+    img{
+        width:200px;
+        margin:200px;
+
+    }
+</style>
+</html>
