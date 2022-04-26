@@ -23,10 +23,10 @@
 {{ form_label(form.prenomf,"Prénom ") }}
 {{ form_widget(form.prenomf) }}
         </div>
-        <div class="col-6">
-{{ form_errors(form.catf) }}
-{{ form_label(form.catf,"Categorie ") }}
-{{ form_widget(form.catf) }}
+        <div class="col-4">
+            {{ form_errors(form.catf) }}
+            {{ form_label(form.catf,"Catégorie") }}
+            {{ form_widget(form.catf) }}
         </div>
         <div class="col-10">
 {{ form_errors(form.telf) }}
@@ -39,6 +39,10 @@
 {{ form_widget(form.addf)}}
 {{ form_errors(form.addf) }}
         </div>
+    <div class="col-md-8">
+
+        {{ form_row(form.captchaCode) }}
+    </div>
     <div class="row mb-3">
 
     <br><div style="margin-top: 0px ; margin-left: 75px">
@@ -47,7 +51,7 @@
                             </div>
                             <br>
 
-</div>
+    </div>
     </div>
     </div>
     </div>

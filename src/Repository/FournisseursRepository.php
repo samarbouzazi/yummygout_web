@@ -126,6 +126,7 @@ class FournisseursRepository extends ServiceEntityRepository
             ->orderBy('s.telf', 'ASC')
             ->getQuery()->getResult();
     }
+
 }
 
 

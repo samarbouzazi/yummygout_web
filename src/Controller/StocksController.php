@@ -7,20 +7,19 @@ use App\Entity\Stocks;
 use App\Form\FournisseursType;
 use App\Form\StocksType;
 use App\Repository\StocksRepository;
-use Cassandra\Timestamp;
-use Doctrine\ORM\Cache\TimestampRegion;
-use Dompdf\Dompdf;
-use Dompdf\Options;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-
-// Include PhpSpreadsheet required namespaces
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\CalendarRepository;
+use Twilio\Rest\Client;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class StocksController extends AbstractController
 {
@@ -41,8 +40,7 @@ class StocksController extends AbstractController
     public function afficheS(StocksRepository $repository)
     {
         $sto = $repository->findAll();
-        return $this->render('stocks/AfficheS.html.twig',
-            ['sto' => $sto]
+        return $this->render('stocks/AfficheS.html.twig', ['sto' => $sto]
         );
 
     }
@@ -57,12 +55,30 @@ class StocksController extends AbstractController
         $form->add('Ajouter', SubmitType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $sid    = "AC1b97326883a46c718448ffdad3857462";
+
+            $token  = "b2fcfad308a28e05354d8232f266163e";
+
+            $twilio = new Client($sid, $token);
+
+            $message = $twilio->messages
+                ->create("+21651714905", // to
+                    array(
+                        "messagingServiceSid" => "MGe2aa2a0bdace81011498b94b52e3e14f",
+
+
+                        "body" => "un stock a été ajouté avec succées "
+                    )
+                );
+            print($message->sid);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($sto);
             $em->flush();
             return $this->redirectToRoute('affS');
         }
-        return $this->render('stocks/AfficheS.html.twig', [
+        return $this->render('stocks/Add.html.twig', [
             'formS' => $form->createView()
         ]);
 
@@ -115,58 +131,126 @@ class StocksController extends AbstractController
 
     }
 
+    /**
+     * @Route("event/calendar", name="calendar")
+     */
+    public function calendar(): Response
+    {
+        // $event = $calendar->findAll();
+        $event = $this->getDoctrine()->getRepository(Stocks::class)->findAll();
+        $rdvs = [];
+        $allDay = true;
+        foreach ($event as $event) {
+            $rdvs[] = [
+                'id' => $event->getIds(),
+                'start' => $event->getdateFinS()->format('Y-m-d H:i:s'),
+                'end' => $event->getdateFinS()->format('Y-m-d H:i:s'),
+                'title' => $event->getNoms(),
+                'description' =>'lala',
+                'backgroundColor' => "#0000ff",
+                'borderColor' => "#ff0000",
+                'textColor' => "#ffffff",
+                'allDay' => $allDay,
+            ];
+        }
+        $data = json_encode($rdvs);
+        return $this->render('stocks/test.html.twig', compact('data'));
+        /*  return $this->render('base_back/voyage/calendar.html.twig', [
+                'controller_name' => 'VoyageController',
+            ]);
+        */
+    }
+
+
+
+    public function getData() :array
+    {
+        /**
+         * @var $Stock Resta[]
+         */
+        $list = [];
+
+        $Use = $this->getDoctrine()->getRepository(Stocks::class)->findAll();
+
+        foreach ($Use as $Resta) {
+            $list[] = [
+                $Resta->getIds(),
+                $Resta->getNoms(),
+                // $Resta->getRoles(),
+                $Resta->getPrixs(),
+                $Resta->getQts(),
+
+            ];
+        }
+        return $list;
+    }
 
     /**
-     * @Route("/excel", name="excel")
+     * @Route("/excel/export",  name="export")
      */
-    public function executeRegistrantsToCsv(StocksRepository $rep){
+    public function export(Request  $request)
+    {
 
-        $sto=$rep->findAll();
         $spreadsheet = new Spreadsheet();
 
-
-        /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
         $sheet = $spreadsheet->getActiveSheet();
 
+        $sheet->setTitle("DataUser List");
 
-        $sheet->setCellValue('A1','hello');
-        $sheet->setTitle("My First Worksheet");
+        $sheet->getCell("A1")->setValue("ID");
+        $sheet->getCell("B1")->setValue("LIBELLE");
+        $sheet->getCell("C1")->setValue("PRIX");
+        $sheet->getCell("D1")->setValue("QUANTITE");
 
-        // Create your Office 2007 Excel (XLSX Format)
+
+
+        $sheet->getColumnDimension("A")->setWidth(20);
+        $sheet->getColumnDimension("B")->setWidth(20);
+        $sheet->getColumnDimension("C")->setWidth(20);
+        $sheet->getColumnDimension("D")->setWidth(20);
+
+
+
+        $spreadsheet->getActiveSheet()->setAutoFilter(
+            $spreadsheet->getActiveSheet()->calculateWorksheetDimension()
+        );
+        $sheet->fromArray($this->getData(), null, "A2", true);
         $writer = new Xlsx($spreadsheet);
+        $writer->save("uploads/data.xlsx");
 
-        // Create a Temporary file in the system
-        $fileName ='.xlsx';
-        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+        $response = new BinaryFileResponse("uploads/data.xlsx");
 
-        // Create the excel file in the tmp directory of the system
-        $writer->save($temp_file);
+        $disposition = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            "data.xlsx"
+        );
 
-        // Return the excel file as an attachment
-        return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+        $response->headers->set("Content-Disposition", $disposition);
 
-        // Return a text response to the browser saying that the excel was succesfully created
+        return $response;
+
 
 
     }
+
     /**
      * @Route("/default", name="default")
      */
     public function pdf(Request $request, StocksRepository $repository)
     {
-        //All formations
-        $sto = $repository->findAll();
-
-// Configure Dompdf according to your needs
+        // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
 
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
-
+        //l'image est située au niveau du dossier public
+        $png = file_get_contents("logo.png");
+        $pngbase64 = base64_encode($png);
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('stocks/pdf.html.twig', [
-            'title' => "Welcome to our PDF Test", "sto" => $sto
+            "img64"=>$pngbase64,
+            'sto' => $repository->findAll()
         ]);
 
         // Load HTML to Dompdf
@@ -179,12 +263,11 @@ class StocksController extends AbstractController
         $dompdf->render();
 
         // Output the generated PDF to Browser (force download)
-        $dompdf->stream("mystock.pdf", [
-            "Attachment" => true
+        $dompdf->stream("Listproduits.pdf", [
+
+            "sto" => true,
         ]);
-
     }
-
 
 
 }
