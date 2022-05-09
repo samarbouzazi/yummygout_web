@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Fournisseurs;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use PHPUnit\Framework\Constraint\IsTrue;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -18,17 +19,19 @@ class FournisseursType extends AbstractType
         $builder
             ->add('nomf')
             ->add('prenomf')
-            ->add('catf')
+            ->add('catf', ChoiceType::class,
+                [
+                    'choices'  =>
+                        [
+                            'Jus' => 'Jus',
+                            'Pattes' => 'Pattes'
+                        ],
+
+
+                ])
             ->add('telf')
             ->add('addf')
-            //->add('agreeTerms',CheckboxType::class,[
-              //  'mapped'=>false,
-                //'constraints'=>[
-                  //  new IsTrue([
-                    //    'message'=>'you should agree to our terms',
-                    //]),
-                //],
-            //])
+
             ->add('captchaCode', CaptchaType::class, array(
                 'captchaConfig' => 'ExampleCaptchaUserRegistration',
                 'constraints' => [

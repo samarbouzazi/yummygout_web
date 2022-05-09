@@ -1,0 +1,176 @@
+
+{% extends 'base-back.html.twig'%}
+
+{% block body %}
+    <!doctype html>
+    <html lang="en"> <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <style>
+
+        </style>
+        <title>Document</title>
+    </head>
+    <body >
+    <div style="margin-top: 100px ; margin-left: 400px">
+
+        <h1 style="margin-left: 25px; margin-left: 350px ;margin-bottom: 25px; color: #86b7fe; font-family: 'Arial Black'; font-size: xx-large">Liste des Commandes</h1>
+
+        {% for message in app.flashes('info')  %}
+            <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+
+
+
+        <div class="card" style="margin-right: 35px">
+        <div  class="card-body" style="margin-right: 50px">
+            <tr class ="card-body"  style="margin-right: 50px" id="t">
+         <br>
+            <br>
+            <input type="text" class="form-control" placeholder="Search…" aria-label="Search" id="search">
+
+
+            <table  id="tableac" class="table table-striped">
+
+                <thead>
+                <tr >
+                    <th style="margin-right: 25px">Référence  Commande <a href="{{ path('idd') }}"><i class="bi bi-sort-up"></i></a><a href="{{ path('id') }}"><i  class="bi bi-sort-down"></i></a></th>
+                    <th >Nom plat <a href="{{ path('platt') }}"><i class="bi bi-sort-up"></i></a><a href="{{ path('plat') }}"><i  class="bi bi-sort-down"></i></a></th>
+                    <th >Prix plat<a href="{{ path('prix') }}"><i class="bi bi-sort-up"></i></a><a href="{{ path('price') }}"><i  class="bi bi-sort-down"></i></a></th>
+                    <th>quantite <a href="{{ path('Qun') }}"><i class="bi bi-sort-up"></i></a><a href="{{ path('refdesc') }}"><i  class="bi bi-sort-down"></i></a></th>
+                    <th>Client</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+
+                </tr>
+                </thead>
+
+                    <tbody id="all">
+                 {% for p in panier  %}
+
+                   <tr id="abc">
+                    <td>{{ p.idpanier }}</td>
+                    <td>{{ p.idplat.Nomplat }}</td>
+                    <td>{{ p.idplat.prixPlat }}</td>
+                    <td>{{ p.quantite }}</td>
+                    <td>{{ p.client }}</td>
+                    <td><a class="btn btn-outline-danger" href ={{ path('update',{'id':p.idpanier}) }}> Update </a></td>
+                    <td><a  class="btn btn-outline-success" href ={{ path('supp',{'id':p.idpanier}) }}> Supprimmer </a></td>
+
+
+               </tr {% endfor %}>
+                <tbody id="a"></tbody>
+
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+                </script>
+                <script>
+                    $( document ).ready(function() {
+                        $("#search").keyup(function(e){
+                            /* La variable value va prendre la valeur insérer dans le champ de texte afin d’effectuer la recherche */
+                            var value = $(this).val();
+                            /* Ajax est lancé lors du remplissage du champ texte dont l’id est « search » pour faire la recherche */
+                            $.ajax({
+                                /* l’url est une chaine de caractères contenant l’adresse où la requête est envoyée */
+                                url : "{{ path('listePanier') }}",
+                                /* La méthode utilisée pour transférer les données est GET */
+                                type : 'GET',
+                                /*Ici search value va prendre la chaine entrée par un utilisateur dans la zone de recherche et sera placée après l’url */
+                                data: {
+                                    'searchValue' : value
+                                },
+                                /*Cette fonction permet de vider le contenu du tableau pour recevoir le nouveau contenu*/
+                                success : function(retour){
+                                    if(retour){
+                                        $('tbody#a').empty();
+                                        $.each(JSON.parse(retour), function(i, obj) {
+                                            $objj= (obj.idplat);
+                                            console.log($objj);
+                                            $('tbody#all').empty();
+                                       $('tbody#a').append('<tr>' +
+                                               ' <td>'+obj.idpanier +'</td>'+
+                                             ' <td>'+ $objj.nomplat+ '</td> '+
+                                           '      <td>'+ $objj.prixPlat +'</td> '+
+                                          '   <td>'+ obj.quantite+'</td> '+
+                                           '  <td>'+ obj.client +'</td> '+
+                                            '<td>'+ '<a class="btn btn-outline-danger" href="/panier/Update/ '+obj.idpanier+'"> Update </a></td>'+
+                                           '<td>'+ '<a class="btn btn-outline-success" href="#"> Supprimer </a></td>'+
+                                            '</tr>');
+
+
+                                        });
+                                    }
+                                    else
+                                    {
+                                        $('#t tbody#all').show();
+                                        $('tbody#a').empty();
+                                        $('tbody#a').fadeIn('fast');
+                                    }
+                                },
+                            });
+                            return false;
+                        });
+                    });
+                </script>
+{#                <script>#}
+{#                    $(document).ready(function(){#}
+{#                        $('#search').keyup(function(){#}
+{#                            search_table($(this).val());#}
+{#                        });#}
+{#                        function search_table(value){#}
+{#                            $('#tableac tbody tr').each(function(){#}
+{#                                var found = 'false';#}
+{#                                $(this).each(function(){#}
+{#                                    if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)#}
+{#                                    {#}
+{#                                        found = 'true';#}
+{#                                    }#}
+{#                                });#}
+{#                                if(found == 'true')#}
+{#                                {#}
+{#                                    $(this).show();#}
+
+{#                                }#}
+{#                                else#}
+{#                                {#}
+{#                                    $(this).hide();#}
+
+{#                                }#}
+{#                            });#}
+{#                        }#}
+{#                    });#}
+{#                </script>#}
+
+
+
+
+            <div class="navigation">
+                {{ knp_pagination_render(panier) }}
+            </div>
+            </tbody>
+            {#
+            <tbody id="a"></tbody>
+            #}
+            </table>
+
+
+        </div>
+</div>
+    </div>
+    </body>
+    </html>
+
+{#            {{ include('@MercurySeriesFlashy/flashy.html.twig') }}#}
+{% endblock %}
+{#  {% block js %}#}
+{#      <script src=" {{ asset('//code.jquery.com/jquery.js') }}"></script>#}
+{#      <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>#}
+{#  {% endblock %}#}
+{#{% block stylesheets %}#}
+{#    <!-- Load Flashy default CSS -->#}
+{#    <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">#}
+{#{% endblock %}#}

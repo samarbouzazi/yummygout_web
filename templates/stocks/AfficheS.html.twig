@@ -22,19 +22,17 @@
 
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">liste des produits</h5>
+
+                <h1 style="margin-left: 50px; margin-left: 400px ; color: #86b7fe; font-family: 'Arial Black'; font-size: xx-large">liste des produits</h1>
+
+
+
                 <div style="margin-left: 1300px ; margin-right: 300px">
-                <h1 class="form-inline">
-                    <i class="ti-search text-primary icon-md mr-10"></i>
-                    <input class="form-control form-control-sm ml-10 w-30" id="search" type="text"
-                           placeholder="Search"
-                           aria-label="Search">
-                </h1>
-                </form>
+
+                            <input type="text" class="form-control" placeholder="Search…" aria-label="Search" id="search">
                 </div>
-<br>
-                <!-- Table with stripped rows -->
-                <table class="table table-striped" >
+
+                    <table  id="tableac" class="table table-striped">
                     <thead>
                     <tr>
                     <tr>
@@ -83,16 +81,48 @@
                         </td>
 
                         <td>
-                            <a href="{{ path('updateS',{'id':i.ids}) }}">Modifier</a>
-                            <a href="{{ path('deletes',{'id':i.ids}) }}">Supprimer</a>
+                            <a href="{{ path('updateS',{'id':i.ids}) }}"><i class="bi bi-pencil-square"></i></a>
+                            <a href="{{ path('deletes',{'id':i.ids}) }}"><i class="bi bi-trash-fill"></i></a>
                         </td>
 
+                        <script>
+                            $(document).ready(function(){
+                                $('#search').keyup(function(){
+                                    search_table($(this).val());
+                                });
+                                function search_table(value){
+                                    $('#tableac tbody tr').each(function(){
+                                        var found = 'false';
+                                        $(this).each(function(){
+                                            if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)
+                                            {
+                                                found = 'true';
+                                            }
+                                        });
+                                        if(found == 'true')
+                                        {
+                                            $(this).show();
 
+                                        }
+                                        else
+                                        {
+                                            $(this).hide();
+
+                                        }
+                                    });
+                                }
+                            });
+                        </script>
                     </tr{% endfor %}>
                     </tbody>
                 </table>
 
             <button type="button" class="btn btn-warning rounded-pill"><a href="{{ path('adds') }}">Ajouter</a></button>
+
+                <button type="button" class="btn btn-warning rounded-pill"><a href="{{ path('export') }}">excel</a></button>
+
+                <button type="button" class="btn btn-warning rounded-pill"><a href="{{ path('calendar') }}">afficher calendrier</a></button>
+                <button type="button" class="btn btn-warning rounded-pill"><a href="{{ path('default') }}">pdf</a></button>
 
 
 

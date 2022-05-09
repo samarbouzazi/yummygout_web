@@ -45,6 +45,20 @@ class OrderRepository extends ServiceEntityRepository
         }
     }
 
+
+
+//    /**
+//     *
+//     */
+//    public function countTotal($value)
+//    {
+//        return $this->createQueryBuilder('fc')
+//            ->select('SUM(fc.total) as Total')
+//            ->getQuery()
+//            ->getOneOrNullResult();
+//    }
+
+
     // /**
     //  * @return Order[] Returns an array of Order objects
     //  */

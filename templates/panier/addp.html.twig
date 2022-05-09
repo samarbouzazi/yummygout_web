@@ -1,0 +1,44 @@
+
+
+{% extends 'base-back.html.twig'%}
+
+{% block body %}
+<br>
+    <br>
+    <br>
+    <br>
+    <div  style="display: flex; align-items: center; justify-content: center; margin-top: 25px; margin-bottom: 25px;">
+        <div class="col-lg-7 mb-5 mb-lg-0">
+            <div class="form-title">
+                <h1> Update Commande</h1>
+            </div>
+            <div id="form_status"></div>
+            <div >
+                {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+
+                <div>
+                    <p> {{ form_widget(form.quantite,  {'attr':{'class':'form-control'}}) }}
+                        {{ form_errors(form.quantite) }}</p>
+
+                    <p>{{ form_widget(form.idplat,  {'attr':{'class':'form-control'}}) }}
+                        {{ form_errors(form.idplat) }}</p>
+                    <p> {{ form_widget(form.client,  {'attr':{'class':'form-control'}}) }}
+                        {{ form_errors(form.client) }}</p>
+
+                    <p>             </p>
+                </div>
+                <input type="hidden" name="token" value="FsWga4&amp;@f6aw">
+                <p>{{ form_widget(form.ajouter,  {'attr':{'class':'btn btn-outline-dark'}}) }}</p>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+{% endblock %}
+

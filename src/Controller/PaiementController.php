@@ -39,6 +39,10 @@ class PaiementController extends AbstractController
         $em=$this->getDoctrine()->getManager();
         $em->remove($paiement);
         $em->flush();
+        $this->addFlash(
+            'info',
+            'Supprimé avec succés'
+        );
         return $this->redirectToRoute('Affichepp');
     }
     /**

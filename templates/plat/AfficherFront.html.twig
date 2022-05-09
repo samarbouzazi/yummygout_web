@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+    </head>
+    <body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row product-lists">
+                    {% for i in plat %}
+                        <div class="col-lg-4 col-md-6 text-center strawberry">
+                            <div class="single-product-item">
+                                <div class="product-image">
+                                    <a href="single-product.html"><img src="{{ asset('/uploads/' ~ i.image ) }}" alt="img" class="image" style="max-height: 350px; width: 350px;" ></a>
+                                </div>
+                                <h3>{{ i.nomplat }}</h3>
+                                {# <p class="product-price"><span>{{ i.idcatt.Nomcat }}</span> {{ i.QPlat }} </p> #}
+
+                                <a href="{{ path('order_add',{'id':i.idplat}) }}" class="cart-btn"> Add to cart</a>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+    </html>
+{% endblock  %}

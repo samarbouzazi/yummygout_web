@@ -29,7 +29,14 @@
                     <label>Rechercher</label>
                     <input type="text" name="search"><input type="submit" value="Recherche">
                 </form>#}
-
+                    <script type="text/javascript">
+                                function imprimer_page(){
+                                    window.print();
+                                }
+                            </script>
+                            <form>
+                                <input id="impression" class="js-programmatic-set-val btn btn-outline-primary mr-1 mb-1s" name="impression" type="button" onclick="imprimer_page()" value="Print this page" />
+                            </form>
                     <table   id="example" class="display" >
                         <thead>
                         <tr >
@@ -76,6 +83,7 @@
 
     </body>
     </html>
+
 {% endblock %}
 
 

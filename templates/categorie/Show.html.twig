@@ -102,7 +102,14 @@
                 <h3>{{ i.nomplat }}</h3>
                 <h3>{{ i.descplat }}</h3>
 
-                <h3>{{ i.prixPlat }}</h3>
+
+                {% if  i.stock   %}
+
+                    <div class="text text-warning">promo !</div>
+                {% endif %}
+
+                <h3>{{ i.prixPlat | number_format(0,',','')}} Dt</h3>
+
 
 
                 <a  class="cart-btn"><i class="fas fa-shopping-cart"></i> ajouter a la carte</a>

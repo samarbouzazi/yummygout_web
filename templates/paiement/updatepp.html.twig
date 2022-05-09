@@ -1,0 +1,40 @@
+
+{% extends 'base-back.html.twig'%}
+{% block body %}
+
+    <div  style="display: flex; align-items: center; justify-content: center; margin-top: 125px; margin-bottom: 25px;">
+        <div class="col-lg-7 mb-5 mb-lg-0" >
+            <div class="form-title">
+                <h1> Update Paiement </h1>
+            </div>
+            <div id="form_status"></div>
+            {% for message in app.flashes('info')  %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+            {% endfor %}
+            <div >
+                {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+
+                <div>
+                    <p> {{ form_errors(form.etatpaiement) }}
+                        {{ form_widget(form.etatpaiement,  {'attr':{'class':'form-control'}}) }}
+                        </p>
+                    <p>
+                        {{ form_errors(form.idpanier) }}
+                        {{ form_row(form.idpanier, { 'attr':{'class':'form-control'} }) }}</p>
+                    <p>
+                        {{ form_errors(form.idClient) }}
+                        {{ form_row(form.idClient, { 'attr':{ 'class':'form-control'} }) }}</p>
+                    <p>             </p>
+                </div>
+                <input type="hidden" name="token" value="FsWga4&amp;@f6aw">
+                <p>{{ form_widget(form.Update,  {'attr':{'class':'btn btn-outline-dark'}}) }}</p>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
