@@ -8,7 +8,7 @@ use App\Entity\Panier;
 use App\Entity\Platt;
 use App\Repository\OrderRepository;
 use App\Repository\PanierRepository;
-use App\Repository\PlatRepository;
+use App\Repository\PlattRepository;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use http\Client;
@@ -32,7 +32,7 @@ class OrderController extends AbstractController
     /**
      * @Route("/order", name="index")
      */
-    public function index(SessionInterface $session, PlatRepository $productsRepository ): Response
+    public function index(SessionInterface $session, PlattRepository  $productsRepository ): Response
     {
         $panier = $session->get("panier", []);
         // On "fabrique" les données
@@ -45,7 +45,7 @@ class OrderController extends AbstractController
                 "produit" => $product,
                 "quantite" => $quantite
             ];
-            $total += $product->getPrixPlat() * $quantite;
+           $total += $product->getPrixPlat() * $quantite;
         }
         return $this->render('order/index.html.twig', compact("dataPanier","total"));
     }
@@ -104,7 +104,7 @@ class OrderController extends AbstractController
     {
         // On récupère le panier actuel
         $panier = $session->get("panier", []);
-        $id = $product->getIdplat();
+        $id = $product->getIdplat() ;
 
         if(!empty($panier[$id])){
             unset($panier[$id]);
@@ -127,13 +127,14 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/valider", name="valider")
-     * @param PlatRepository $produits
+     * @param PlattRepository $produits
      * @param SessionInterface $session
      */
-    public function valider(PlatRepository $productsRepository, SessionInterface $session , PanierRepository $panierRepository , OrderRepository $orderrepository , MailerInterface $mailer)
+    public function valider(PlattRepository  $productsRepository, SessionInterface $session , PanierRepository $panierRepository , OrderRepository $orderrepository , MailerInterface $mailer)
     {   $total=0;
 
-        $userr=$this->getUser()->getUsername();
+       $userr=$this->getUser()->getUsername();
+       // $userr="marwa";
         $panier = $session->get('panier', []);
         $data = [];
         foreach($panier as $id => $quantity){
@@ -172,8 +173,8 @@ class OrderController extends AbstractController
             $objectManager->persist($lignecommande);
         }
         $objectManager->flush();
-        $to = $this->getUser()->getUsername();
-//        $to="marwa.memmi@esprit.tn";
+     $to = $this->getUser()->getUsername();
+    // $to="marwa.memmi@esprit.tn";
         $email = (new Email())
             ->from('yummygout2@gmail.com')
             ->to($to)
@@ -194,7 +195,7 @@ class OrderController extends AbstractController
         ;
 
         $mailer->send($email);
-        return $this->redirectToRoute("order_index");
+        return $this->redirectToRoute("Ajouterlivraison");
     }
     /**
      * @param PanierRepository $repository
@@ -205,7 +206,7 @@ class OrderController extends AbstractController
         $total= 0;
         $panier = new Panier();
         $userr=$this->getUser()->getUsername();
-//        $userr="marwa.memmi@esprit.tn";
+        //$userr="marwa.memmi@esprit.tn";
         $allpanier=$repository->findByclient($userr);
         $panierr = $paginator->paginate(
 
@@ -227,8 +228,8 @@ class OrderController extends AbstractController
      */
     public function sendEmail(MailerInterface $mailer): void
    {
-          $to = $this->getUser()->getUsername();
-//        $to =  $userr="marwa.memmi@esprit.tn";
+        $to = $this->getUser()->getUsername();
+      //$to ="marwa.memmi@esprit.tn";
         $pdf=$this->showpdf();
 //        $attachement = \Swift_Attachment::newInstance($pdf);
         $email = (new Email())
@@ -255,16 +256,16 @@ class OrderController extends AbstractController
 public function showpdf(PanierRepository $panierRepository):Response
 {
     $userr = $this->getUser()->getUsername();
-//    $userr="marwa.memmi@esprit.tn";
+    //$userr="marwa.memmi@esprit.tn";
     $pdfOptions = new Options();
     $pdfOptions->set('defaultFont', 'Arial');
 //    $pdfOptions->setIsRemoteEnabled(true);
-    $png = file_get_contents("logg.png");
-    $pngbase64 = base64_encode($png);
+//    $png = file_get_contents("logg.png");
+//    $pngbase64 = base64_encode($png);
     $dompdf = new Dompdf($pdfOptions);
     $panierRepository = $panierRepository->findByclient($userr);
     $html = $this->renderView('order/listA.html.twig', [
-        'panierr' => $panierRepository, 'userr' => $userr, "img64" => $pngbase64
+        'panierr' => $panierRepository, 'userr' => $userr
     ]);
     $dompdf->loadHtml($html);
     $dompdf->setPaper('A4', 'portrait');

@@ -8,11 +8,17 @@ use App\Form\CategoriesType;
 use App\Form\PlatType;
 use App\Repository\CategorieRepository;
 use App\Repository\PlattRepository;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
+use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+
 
 class PlattController extends AbstractController
 {
@@ -25,7 +31,19 @@ class PlattController extends AbstractController
             'controller_name' => 'PlattController',
         ]);
     }
+    /**
+     * @Route("/affpClassfront", name="affpClassfront")
+     */
 
+    public function afficherfF(PlattRepository $repository ,CategorieRepository $repcat)
+    {
+        $plattt = $repository->findAll();
+        $categ=$repcat->findAll();
+//        dd($categ);
+
+        return $this->render('platt/AfficherFront.html.twig', ['plat' => $plattt , 'cat' => $categ]);
+
+    }
     /**
      * @Route("/affpClass", name="affpClass")
      */
@@ -52,29 +70,19 @@ class PlattController extends AbstractController
 
     }
 
-    /**
-     * @Route("/affpClassfront", name="affpClassfront")
-     */
 
-    public function afficherfF(PlattRepository $repository ,CategorieRepository $repcat)
-    {
-        $plattt = $repository->findAll();
-        $categ=$repcat->findAll();
-
-        return $this->render('platt/AfficherFront.html.twig', ['plat' => $plattt , 'cat' => $categ]);
-
-    }
 
 
     /**
      * @Route ("/dp/{id}",name="dp1")
      */
-    public function supprimer1($id, PlattRepository $repository)
+    public function supprimer1($id, PlattRepository $repository,FlashyNotifier $flashy)
     {
         $plat = $repository->find($id);
         $em = $this->getDoctrine()->getManager();
         $em->remove($plat);
         $em->flush();
+        $flashy->warning('Suppression Avec Succès!');
 
         return $this->redirectToRoute('affpClass');
     }
@@ -95,7 +103,7 @@ class PlattController extends AbstractController
      * @Route ("/plat/addp",name="addp")
      */
 
-    public function add(Request $request)
+    public function add(Request $request,FlashyNotifier $flashy)
     {
         $plat = new Platt();
         $form = $this->createForm(PlatType::class, $plat);
@@ -116,6 +124,7 @@ class PlattController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($plat);
             $em->flush();
+            $flashy->success('Ajout Avec Succès!');
             return $this->redirectToRoute('affpClass');
         }
         return $this->render('platt/Addp.html.twig', [
@@ -127,7 +136,7 @@ class PlattController extends AbstractController
     /**
      * @Route ("/plat/updatep/{id}",name="updatep")
      */
-    public function update(PlattRepository $repository, $id, Request $request)
+    public function update(PlattRepository $repository, $id, Request $request,FlashyNotifier $flashy)
     {
         $plat = $repository->find($id);
         $form = $this->createForm(PlatType::class, $plat);
@@ -147,6 +156,7 @@ class PlattController extends AbstractController
             $plat->setImage($fileName);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+            $flashy->info('Modification Avec Succès!');
             return $this->redirectToRoute("affpClass");
         }
         return $this->render('platt/updatep.html.twig', [
@@ -174,5 +184,72 @@ class PlattController extends AbstractController
         return $this->render('platt/Affiche.html.twig', ['Cat' => $catt]);
 
     }
+    /**
+     * @Route("/pdf", name="PDF", methods={"GET"})
+     */
+    public function pdf(PlattRepository $plattRepository)
+    {
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
 
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        //l'image est située au niveau du dossier public
+        $png = file_get_contents("l.png");
+        $pngbase64 = base64_encode($png);
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('platt/affichepdf.html.twig', [
+            "img64"=>$pngbase64,
+            'plat' => $plattRepository->findAll()
+        ]);
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (force download)
+        $dompdf->stream("ListeDesplats.pdf", [
+
+            "plat" => true,
+        ]);
+    }
+
+    /**
+     * @Route("/trit", name="trit")
+     */
+    public function OrderBytel(PlattRepository $repository,Request $requestr)
+    {
+        $four = $repository->orderBynom();
+
+        return $this->render('Platt/Afficher.html.twig',
+            ['plat' => $four]);
+    }
+
+    /**
+     * @Route("/tritt", name="tritt")
+     */
+    public function OrderBydesc(PlattRepository $repository,Request $requestr)
+    {
+        $four = $repository->orderBydesc();
+
+        return $this->render('Platt/Afficher.html.twig',
+            ['plat' => $four]);
+    }
+
+    /**
+     * @Route("/trittt", name="trittt")
+     */
+    public function OrderByprix(PlattRepository $repository,Request $requestr)
+    {
+        $four = $repository->orderByprixPlat();
+
+        return $this->render('Platt/Afficher.html.twig',
+            ['plat' => $four]);
+    }
 }
