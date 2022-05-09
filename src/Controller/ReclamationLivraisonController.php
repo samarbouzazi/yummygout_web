@@ -39,7 +39,7 @@ class ReclamationLivraisonController extends AbstractController
         $reclamationlivraison= $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         return $this->render('reclamation_livraison/ReclamationBack.html.twig', compact('reclamationlivraison'));}
     /**
@@ -124,7 +124,7 @@ class ReclamationLivraisonController extends AbstractController
         $liv= $paginator->paginate(
             $donnees,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         return $this->render('reclamation_livraison/ReclamationBack.html.twig', ['reclamationlivraison'=>$liv]);
 

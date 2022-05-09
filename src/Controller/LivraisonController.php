@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use DateTime;
 
 class LivraisonController extends AbstractController
@@ -46,6 +47,86 @@ class LivraisonController extends AbstractController
             5
         );
         return $this->render('livraison/Affichel.html.twig', ['livraison'=>$livraison]);
+    }
+
+    /**
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @Route("/liv", name="livjson")
+     */
+    public function alllivraison(NormalizerInterface $normalizer){
+        $repository= $this->getDoctrine()->getRepository(Livraison::class);
+        $donnees=$repository->findAll();
+        $jsonContent= $normalizer->normalize($donnees, 'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent));
+    }
+
+    /**
+     * @param NormalizerInterface $normalizer
+     * @param $id
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route("/detail/{id}" , name="detail")
+     */
+    public function detailliv(NormalizerInterface $normalizer, $id){
+        $repository= $this->getDoctrine()->getRepository(Livraison::class);
+        $donnees=$repository->find($id);
+        $jsonContent= $normalizer->normalize($donnees, 'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent));
+    }
+
+    /**
+     * @param LivraisonRepository $repository
+     * @param $id
+     * @param Request $request
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route("/updatejson/{id}" , name="updatejson")
+     */
+    function updatejson(LivraisonRepository $repository, $id, Request $request, NormalizerInterface $normalizer){
+        $em= $this->getDoctrine()->getManager();
+        $livraison= $repository->find($id);
+        $livraison->setEtat($request->get('etat'));
+        $em->flush();
+        $jsonContent= $normalizer->normalize($livraison, 'json', ['groups'=>'post:read']);
+        return new Response(("information updated successfully".json_encode($jsonContent)));
+    }
+
+    /**
+     * @param Request $request
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route ("/addlivjson/new", name="addlivjson")
+     */
+    function addlivjson(Request $request, NormalizerInterface $normalizer){
+        $em=$this->getDoctrine()->getManager();
+        $livraison= new Livraison();
+        $livraison->setReflivraison($request->get('reflivraison'));
+        $livraison->setRegion($request->get('region'));
+        $livraison->setRueliv($request->get('rueliv'));
+        $em->persist($livraison);
+        $em->flush();
+        $jsonContent= $normalizer->normalize($livraison, 'json', ['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent));
+    }
+
+    /**
+     * @param Request $request
+     * @param NormalizerInterface $normalizer
+     * @param $id
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route ("/suppjson/{id}",name="suppjson")
+     */
+    public function deletelivjson(Request $request, NormalizerInterface $normalizer, $id){
+        $em=$this->getDoctrine()->getManager();
+        $livraison= $em->getRepository(Livraison::class)->find($id);
+        $em->remove($livraison);
+        $em->flush();
+        $jsonContent= $normalizer->normalize($livraison, 'json',['groups'=>'post:read']);
+        return new Response("livraison supprimée".json_encode($jsonContent));
     }
     /**
      * @param LivraisonRepository $repository
@@ -104,10 +185,6 @@ class LivraisonController extends AbstractController
             $backcolor=$calendar->setBackgroundcolor("#00ffbb");
             $border=$calendar->setBordercolor("#000000");
             $textcolor=$calendar->setTextcolor("#000000");
-            //livreurrrrrrrrrrrrrrrr calendarrrrr
-            //$livr=$repo->findOneBy(['id'=>$livraison->getIdlivreur()]);
-            //$user=$repouser->findOneBy(['id'=>$livr->getIduser()]);
-            //$username=$user->getusername();
             $emm=$this->getDoctrine()->getManager();
             $liv=$calendar->setLivreur("amani.hadda@esprit.tn");
             $livraisoncalendar=$calendar->setIdlivraison($livraison);
@@ -124,7 +201,7 @@ class LivraisonController extends AbstractController
            // }
             $c=$this->getDistance($livraison->getRegion());
             if($c>15.0){
-                $frais=5.5;
+                $frais=5.0;
             }
             if($c<15.0){
                 $frais=3.0;
@@ -412,6 +489,21 @@ public function tester($region, $rueliv){
             $c= round($miles* 1.609344, 2);
         }
         return $c;
+    }
+
+    /**
+     * @param LivraisonRepository $repo
+     * @return Response
+     * @Route("/yezi", name="yezi")
+     */
+    public function count(LivraisonRepository $repo){
+        $c=$repo->countnb();
+        foreach ($c as $recl){
+            $labelss=$recl['nb'];
+        }
+        $nb=strval($c);
+        return $this->render('livraison/Affichefront.html.twig', ['c'=>$labelss]);
+
     }
 
 }
