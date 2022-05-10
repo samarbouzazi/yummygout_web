@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * Livraison
  *
@@ -18,34 +20,39 @@ class Livraison
      * @ORM\Column(name="id_livraison", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups ("post:read")
      */
     private $idLivraison;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="reflivraison", type="integer", nullable=false)
+     * @ORM\Column(name="reflivraison", type="integer", nullable=true)
+     * @Groups ("post:read")
      */
     private $reflivraison;
 
     /**
      * @var \DateTime
      * @Gedmo\Timestampable (on="create")
-     * @ORM\Column(name="date", type="datetime", nullable=false)
+     * @ORM\Column(name="date", type="datetime", nullable=true)
+     * @Groups ("post:read")
      */
     private $date;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Etat", type="string", length=255, nullable=false, options={"default"="en cours"})
+     * @ORM\Column(name="Etat", type="string", length=255, nullable=true, options={"default"="en cours"})
+     * @Groups ("post:read")
      */
     private $etat = 'en cours';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="region", type="string", length=255, nullable=false)
+     * @ORM\Column(name="region", type="string", length=255, nullable=true)
+     * @Groups ("post:read")
      */
     private $region;
 
@@ -53,13 +60,15 @@ class Livraison
      * @var string
      *
      * @ORM\Column(name="rueliv", type="string", length=255, nullable=false)
+     * @Groups ("post:read")
      */
     private $rueliv;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="client", type="string", length=255, nullable=false)
+     * @ORM\Column(name="client", type="string", length=255, nullable=true)
+     * @Groups ("post:read")
      */
     private $client;
 

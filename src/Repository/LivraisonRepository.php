@@ -157,4 +157,13 @@ class LivraisonRepository extends ServiceEntityRepository
             ->setParameter('idliv',$idd)->getQuery()->getResult();
     }
 
+    /**
+     * @return float|int|mixed|string
+     */
+    public function countnb(){
+        return $this->createQueryBuilder('l')
+            ->select('COUNT(l) as nb')
+           ->where('l.etat = :idliv')
+            ->setParameter('idliv',"en cours")->getQuery()->getResult();
+    }
 }
